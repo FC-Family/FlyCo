@@ -1,0 +1,4 @@
+path:
+  - waypoints:
+    # pisa_cathedral
+    - [0.0, 0.0, 6.0, 10.0, 15.0]

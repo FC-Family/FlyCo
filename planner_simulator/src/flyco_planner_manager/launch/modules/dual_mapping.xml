@@ -1,0 +1,186 @@
+<launch>
+  <arg name="node_ns" default="flyco_planner"/>
+
+  <arg name="hcmap_resolution" default="0.15"/>
+  <arg name="hcmap_interval" default="1.0"/>
+  <arg name="hcmap_plane_thickness" default="3.0"/>
+  <arg name="hcmap_dilate_radius" default="0.5"/>
+  <arg name="hcmap_check_scale" default="5.0"/>
+  <arg name="hcmap_check_size" default="7"/>
+  <arg name="hcmap_inflate_voxel" default="6"/>
+
+  <arg name="sdf_map_resolution" default="0.15"/>
+  <arg name="sdf_map_size_x" default="60.0"/>
+  <arg name="sdf_map_size_y" default="60.0"/>
+  <arg name="sdf_map_size_z" default="40.0"/>
+  <arg name="sdf_map_back_x" default="-10.0"/>
+  <arg name="sdf_map_back_y" default="-30.0"/>
+  <arg name="sdf_map_obstacles_inflation" default="0.3"/>
+  <arg name="sdf_map_target_obs_inf" default="0.6"/>
+  <arg name="sdf_map_obstacles_inf_z" default="0.3"/>
+  <arg name="sdf_map_target_obs_inf_z" default="0.6"/>
+  <arg name="sdf_map_local_bound_inflate" default="0.5"/>
+  <arg name="sdf_map_local_map_margin" default="50"/>
+  <arg name="sdf_map_ground_height" default="0.0"/>
+  <arg name="sdf_map_default_dist" default="0.0"/>
+  <arg name="sdf_map_virtual_ceil_height" default="49.0"/>
+  <arg name="sdf_map_optimistic" default="true"/>
+  <arg name="sdf_map_signed_dist" default="true"/>
+  <arg name="sdf_map_p_hit" default="0.96"/>
+  <arg name="sdf_map_p_miss" default="0.495"/>
+  <arg name="sdf_map_p_min" default="0.12"/>
+  <arg name="sdf_map_p_max" default="0.93"/>
+  <arg name="sdf_map_p_occ" default="0.30"/>
+  <arg name="sdf_map_min_ray_length" default="0.3"/>
+  <arg name="sdf_map_max_ray_length" default="35.0"/>
+  <arg name="sdf_map_airsim_flag" default="true"/>
+  <arg name="sdf_map_enable_inherit" default="false"/>
+
+  <arg name="map_ros_mapping_fps" default="10.0"/>
+  <arg name="map_ros_partial_time" default="0.2"/>
+  <arg name="map_ros_cx" default="320.0"/>
+  <arg name="map_ros_cy" default="240.0"/>
+  <arg name="map_ros_fx" default="554.2562866210938"/>
+  <arg name="map_ros_fy" default="554.2562866210938"/>
+  <arg name="map_ros_depth_filter_maxdist" default="11.5"/>
+  <arg name="map_ros_depth_filter_mindist" default="0.25"/>
+  <arg name="map_ros_depth_filter_margin" default="2"/>
+  <arg name="map_ros_k_depth_scaling_factor" default="1000.0"/>
+  <arg name="map_ros_skip_pixel" default="2"/>
+  <arg name="map_ros_esdf_slice_height" default="0.3"/>
+  <arg name="map_ros_visualization_truncate_height" default="48.5"/>
+  <arg name="map_ros_visualization_truncate_low" default="-1.0"/>
+  <arg name="map_ros_show_occ_time" default="false"/>
+  <arg name="map_ros_show_esdf_time" default="false"/>
+  <arg name="map_ros_show_all_map" default="true"/>
+  <arg name="map_ros_show_local_map" default="true"/>
+  <arg name="map_ros_show_depth" default="true"/>
+  <arg name="map_ros_show_local_range" default="true"/>
+  <arg name="map_ros_show_target" default="true"/>
+  <arg name="map_ros_show_env" default="true"/>
+  <arg name="map_ros_show_inflate" default="true"/>
+  <arg name="map_ros_frame_id" default="world"/>
+  <arg name="map_ros_airsim_flag" default="true"/>
+  <arg name="map_ros_h_fov" default="360.0"/>
+  <arg name="map_ros_v_fov_min" default="-37.0"/>
+  <arg name="map_ros_v_fov_max" default="45.0"/>
+  <arg name="map_ros_inf_fov" default="4.0"/>
+  <arg name="map_ros_h_res" default="1.0"/>
+  <arg name="map_ros_v_res" default="1.0"/>
+  <arg name="map_ros_dil_pixels" default="3"/>
+  <arg name="map_ros_dp" default="false"/>
+  <arg name="map_ros_dgp" default="false"/>
+  <arg name="map_ros_cp" default="false"/>
+  <arg name="map_ros_ctep" default="true"/>
+  <arg name="map_ros_extrinsic_x" default="0.0"/>
+  <arg name="map_ros_extrinsic_y" default="0.0"/>
+  <arg name="map_ros_extrinsic_z" default="-0.0"/>
+  <arg name="map_ros_extrinsic_roll_deg" default="0.0"/>
+  <arg name="map_ros_extrinsic_pitch_deg" default="0.0"/>
+  <arg name="map_ros_extrinsic_yaw_deg" default="-0.0"/>
+
+  <group ns="$(arg node_ns)">
+    <!-- ! Dual Mapping ! -->
+    <!-- ? Prediction HCMap -->
+    <param name="hcmap/resolution"      value="$(arg hcmap_resolution)" type="double"/>
+    <param name="hcmap/interval"        value="$(arg hcmap_interval)" type="double"/>
+    <param name="hcmap/plane_thickness" value="$(arg hcmap_plane_thickness)" type="double"/>
+    <param name="hcmap/dilateRadius"    value="$(arg hcmap_dilate_radius)" type="double"/>
+    <param name="hcmap/checkScale"      value="$(arg hcmap_check_scale)" type="double"/>
+    <param name="hcmap/checkSize"       value="$(arg hcmap_check_size)" type="int"/>
+    <param name="hcmap/inflateVoxel"    value="$(arg hcmap_inflate_voxel)" type="int"/>
+
+    <!-- ? Real-world SDFMap -->
+    <param name="sdf_map/resolution"          value="$(arg sdf_map_resolution)"/>
+    <param name="sdf_map/map_size_x"          value="$(arg sdf_map_size_x)"/>
+    <param name="sdf_map/map_size_y"          value="$(arg sdf_map_size_y)"/>
+    <param name="sdf_map/map_size_z"          value="$(arg sdf_map_size_z)"/>
+    <param name="sdf_map/map_back_x"          value="$(arg sdf_map_back_x)"/>
+    <param name="sdf_map/map_back_y"          value="$(arg sdf_map_back_y)"/>
+    <param name="sdf_map/obstacles_inflation" value="$(arg sdf_map_obstacles_inflation)"/>
+    <param name="sdf_map/target_obs_inf"      value="$(arg sdf_map_target_obs_inf)"/>
+    <param name="sdf_map/obstacles_inf_z"     value="$(arg sdf_map_obstacles_inf_z)"/>
+    <param name="sdf_map/target_obs_inf_z"    value="$(arg sdf_map_target_obs_inf_z)"/>
+    <param name="sdf_map/local_bound_inflate" value="$(arg sdf_map_local_bound_inflate)"/>
+    <param name="sdf_map/local_map_margin"    value="$(arg sdf_map_local_map_margin)"/>
+    <param name="sdf_map/ground_height"       value="$(arg sdf_map_ground_height)"/>
+    <param name="sdf_map/default_dist"        value="$(arg sdf_map_default_dist)"/>
+    <param name="sdf_map/virtual_ceil_height" value="$(arg sdf_map_virtual_ceil_height)"/>
+    <param name="sdf_map/optimistic"          value="$(arg sdf_map_optimistic)" type="bool"/>
+    <param name="sdf_map/signed_dist"         value="$(arg sdf_map_signed_dist)" type="bool"/>
+    <param name="sdf_map/p_hit"               value="$(arg sdf_map_p_hit)"/>
+    <param name="sdf_map/p_miss"              value="$(arg sdf_map_p_miss)"/>
+    <param name="sdf_map/p_min"               value="$(arg sdf_map_p_min)"/>
+    <param name="sdf_map/p_max"               value="$(arg sdf_map_p_max)"/>
+    <param name="sdf_map/p_occ"               value="$(arg sdf_map_p_occ)"/>
+    <param name="sdf_map/min_ray_length"      value="$(arg sdf_map_min_ray_length)"/>
+    <param name="sdf_map/max_ray_length"      value="$(arg sdf_map_max_ray_length)"/>
+    <param name="sdf_map/airsim_flag"         value="$(arg sdf_map_airsim_flag)"/>
+    <param name="sdf_map/enable_inherit"      value="$(arg sdf_map_enable_inherit)"/>
+
+    <!-- ? ROS Service -->
+    <param name="map_ros/mapping_fps"                   value="$(arg map_ros_mapping_fps)" type="double"/>
+    <param name="map_ros/partial_time"                  value="$(arg map_ros_partial_time)" type="double"/>
+    <param name="map_ros/cx"                            value="$(arg map_ros_cx)"/>
+    <param name="map_ros/cy"                            value="$(arg map_ros_cy)"/>
+    <param name="map_ros/fx"                            value="$(arg map_ros_fx)"/>
+    <param name="map_ros/fy"                            value="$(arg map_ros_fy)"/>
+    <param name="map_ros/depth_filter_maxdist"          value="$(arg map_ros_depth_filter_maxdist)"/>
+    <param name="map_ros/depth_filter_mindist"          value="$(arg map_ros_depth_filter_mindist)"/>
+    <param name="map_ros/depth_filter_margin"           value="$(arg map_ros_depth_filter_margin)"/>
+    <param name="map_ros/k_depth_scaling_factor"        value="$(arg map_ros_k_depth_scaling_factor)"/>
+    <param name="map_ros/skip_pixel"                    value="$(arg map_ros_skip_pixel)"/>
+    <param name="map_ros/esdf_slice_height"             value="$(arg map_ros_esdf_slice_height)"/>
+    <param name="map_ros/visualization_truncate_height" value="$(arg map_ros_visualization_truncate_height)"/>
+    <param name="map_ros/visualization_truncate_low"    value="$(arg map_ros_visualization_truncate_low)"/>
+    <param name="map_ros/show_occ_time"                 value="$(arg map_ros_show_occ_time)"/>
+    <param name="map_ros/show_esdf_time"                value="$(arg map_ros_show_esdf_time)"/>
+    <param name="map_ros/show_all_map"                  value="$(arg map_ros_show_all_map)"/>
+    <param name="map_ros/show_local_map"                value="$(arg map_ros_show_local_map)"/>
+    <param name="map_ros/show_depth"                    value="$(arg map_ros_show_depth)"/>
+    <param name="map_ros/show_local_range"              value="$(arg map_ros_show_local_range)"/>
+    <param name="map_ros/show_target"                   value="$(arg map_ros_show_target)"/>
+    <param name="map_ros/show_env"                      value="$(arg map_ros_show_env)"/>
+    <param name="map_ros/show_inflate"                  value="$(arg map_ros_show_inflate)"/>
+    <param name="map_ros/frame_id"                      value="$(arg map_ros_frame_id)"/>
+    <param name="map_ros/airsim_flag"                   value="$(arg map_ros_airsim_flag)"/>
+    <param name="map_ros/h_fov"                         value="$(arg map_ros_h_fov)"/>
+    <param name="map_ros/v_fov_min"                     value="$(arg map_ros_v_fov_min)"/>
+    <param name="map_ros/v_fov_max"                     value="$(arg map_ros_v_fov_max)"/>
+    <param name="map_ros/inf_fov"                       value="$(arg map_ros_inf_fov)"/>
+    <param name="map_ros/h_res"                         value="$(arg map_ros_h_res)"/>
+    <param name="map_ros/v_res"                         value="$(arg map_ros_v_res)"/>
+    <param name="map_ros/dil_pixels"                    value="$(arg map_ros_dil_pixels)"/>
+
+    <!-- ? Type of Inputs -->
+    <!-- 
+    * dp:   depth camera + pose
+    * dgp:  depth camera + gimbal + pose
+    * cp:   LiDAR + pose
+    * ctep: LiDAR + target + env + pose (Tracking mode) 
+    -->
+    <param name="map_ros/dp"   value="$(arg map_ros_dp)" type="bool"/>
+    <param name="map_ros/dgp"  value="$(arg map_ros_dgp)" type="bool"/>
+    <param name="map_ros/cp"   value="$(arg map_ros_cp)" type="bool"/>
+    <param name="map_ros/ctep" value="$(arg map_ros_ctep)" type="bool"/>
+
+    <!-- ? Depth Extrinsic Parameters -->
+    <!-- ? AirSim Sensor -> should transform param from NED to ENU -->
+    <!-- ? Extrinsic Definition: x -> positive for forward, negative for backward
+         ?                       y -> positive for right, negative for left
+         ?                       z -> positive for down, negative for up -->
+    <!-- * That means you adjust the sensor in NED frame on the body. -->
+    <!-- ? For LiDAR sensor in AirSim, the extrinsic parameters are: -->
+    <!-- * If you set offset (x, y, z) in setting.json of AirSim, you should set the value as (y, x, -z) here. -->
+    <!-- * If you set rotation (roll, pitch, yaw) in setting.json of AirSim, you should set the value as (pitch, roll, -yaw) here. 
+         * Note: AirSim uses degree, you should convert it to rad. -->
+    <!-- ? For Camera/Depth sensor in AirSim, the extrinsic parameters are: -->
+    <!-- * If you set offset (x, y, z) in setting.json of AirSim, you should set the value as (x, -y, -z) here. -->
+    <param name="map_ros/extrinsic_x"     value="$(arg map_ros_extrinsic_x)" type="double"/>
+    <param name="map_ros/extrinsic_y"     value="$(arg map_ros_extrinsic_y)" type="double"/>
+    <param name="map_ros/extrinsic_z"     value="$(arg map_ros_extrinsic_z)" type="double"/>
+    <param name="map_ros/extrinsic_roll"  value="$(eval arg('map_ros_extrinsic_roll_deg')*3.1415926/180.0)" type="double"/>
+    <param name="map_ros/extrinsic_pitch" value="$(eval arg('map_ros_extrinsic_pitch_deg')*3.1415926/180.0)" type="double"/>
+    <param name="map_ros/extrinsic_yaw"   value="$(eval arg('map_ros_extrinsic_yaw_deg')*3.1415926/180.0)" type="double"/>
+  </group>
+</launch>

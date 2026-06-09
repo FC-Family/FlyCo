@@ -1,0 +1,31 @@
+# Catkin / CMake build products
+build/
+devel/
+install/
+logs/
+log/
+run_log/
+.catkin_workspace
+.catkin_tools/
+
+# Local tool state
+.omx/
+.codex
+.vscode/
+.idea/
+
+# Python caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Runtime planner outputs
+src/flyco_planner_manager/inherit_data/*.yaml
+src/flyco_planner_manager/cam
+src/plan_env/inherit_map/*.pcd
+src/rgb_point_map/inherit_map/*.pcd
+
+# Large runtime recordings / generated geometry
+*.pcd
+*.bag

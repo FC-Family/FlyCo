@@ -1,0 +1,14 @@
+<launch>
+  <arg name="input_query_points_topic" default="/query_points" />
+  <arg name="input_query_text_topic" default="/query_text" />
+  <arg name="query_points_topic" default="/tracking/prompt/points" />
+  <arg name="query_text_topic" default="/tracking/prompt/text" />
+
+  <node pkg="sam_tracking" name="tracking_prompt" type="prompt_node.py" output="screen">
+    <param name="input_query_points_topic" value="$(arg input_query_points_topic)" type="string" />
+    <param name="input_query_text_topic" value="$(arg input_query_text_topic)" type="string" />
+    <param name="query_points_topic" value="$(arg query_points_topic)" type="string" />
+    <param name="query_text_topic" value="$(arg query_text_topic)" type="string" />
+  </node>
+
+</launch>

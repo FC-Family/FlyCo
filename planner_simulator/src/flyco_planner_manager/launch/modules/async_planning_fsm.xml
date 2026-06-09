@@ -1,0 +1,32 @@
+<launch>
+  <arg name="node_ns" default="flyco_planner"/>
+
+  <arg name="fsm_global_planning_fps" default="10.0"/>
+  <arg name="fsm_local_planning_fps" default="20.0"/>
+  <arg name="fsm_progress_fps" default="5.0"/>
+  <arg name="fsm_safety_fps" default="20.0"/>
+  <arg name="fsm_vis_fps" default="1.0"/>
+  <arg name="fsm_global_plan_time" default="2.0"/>
+  <arg name="fsm_global_plan_latency" default="1.0"/>
+  <arg name="fsm_replan_time" default="0.15"/>
+  <arg name="fsm_replan_full_exec" default="3.0"/>
+  <arg name="fsm_replan_periodic" default="10.0"/>
+  <arg name="fsm_replan_proportion" default="0.3"/>
+  <arg name="fsm_safety_horizon" default="15.0"/>
+
+  <group ns="$(arg node_ns)">
+    <!-- ! Async Planning FSM ! -->
+    <param name="fsm/global_planning_fps" value="$(arg fsm_global_planning_fps)" type="double"/>
+    <param name="fsm/local_planning_fps"  value="$(arg fsm_local_planning_fps)" type="double"/>
+    <param name="fsm/progress_fps"        value="$(arg fsm_progress_fps)" type="double"/>
+    <param name="fsm/safety_fps"          value="$(arg fsm_safety_fps)" type="double"/>
+    <param name="fsm/vis_fps"             value="$(arg fsm_vis_fps)" type="double"/>
+    <param name="fsm/global_plan_time"    value="$(arg fsm_global_plan_time)" type="double"/>
+    <param name="fsm/global_plan_latency" value="$(arg fsm_global_plan_latency)" type="double"/>
+    <param name="fsm/replan_time"         value="$(arg fsm_replan_time)" type="double"/>
+    <param name="fsm/replan_full_exec"    value="$(arg fsm_replan_full_exec)" type="double"/>
+    <param name="fsm/replan_periodic"     value="$(arg fsm_replan_periodic)" type="double"/>
+    <param name="fsm/replan_proportion"   value="$(arg fsm_replan_proportion)" type="double"/>
+    <param name="fsm/safety_horizon"      value="$(arg fsm_safety_horizon)" type="double"/>
+  </group>
+</launch>

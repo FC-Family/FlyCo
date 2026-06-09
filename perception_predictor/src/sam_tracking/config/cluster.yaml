@@ -1,0 +1,36 @@
+sam_tracking_node:
+  all_point_topic: "/server/pc"
+  target_point_topic: "/tracking/guider_pc"
+  min_height: 0.1
+  cluster_tolerance: 1.5
+  resolution: 0.2
+  min_cluster_size: 300
+  max_cluster_size: 85000
+  cluster_algorithm: "incremental_euclidean"
+  dbscan_core_min_points: 1
+  selection_temporal_weight: 0.25
+  selection_min_score: 0.05
+  selection_max_centroid_jump: 8.0
+  target_group_mode: "off"  # off, conservative, balanced, aggressive
+  target_group_enabled: false
+  target_refine_mode: "guide_radius"  # off, guide_radius
+  target_refine_radius: 20.0
+  max_points: 1024
+  rosconsole_level: "info"
+  incremental : true
+
+
+  # grid
+  ground_filter_mode: "off"     # off, grid, first_guide_reference
+  ground_filter_margin: 0.3
+  filter_grid_size: 2.0          # 网格大小
+  grid_max_height: 6.0          # 最大高度
+  grid_height_threshold: 0.5    # 高度阈值
+
+  # filter
+  cluster_min_x : -10000
+  cluster_max_x : 10000
+  cluster_min_y : -10000
+  cluster_max_y : 10000
+  cluster_min_z : -10000
+  cluster_max_z : 10000

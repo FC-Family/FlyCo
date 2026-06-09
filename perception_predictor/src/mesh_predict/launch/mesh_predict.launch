@@ -1,0 +1,51 @@
+<launch>
+  <arg name="profile_config_path" default="$(find mesh_predict)/config/profiles/sim.yaml"/>
+  <arg name="camera_param" default=""/>
+  <arg name="runtime_config_path" default="$(find mesh_predict)/config/runtime/pc_mesh_predict_runtime.yaml"/>
+  <arg name="mesh_pred_ckpt_path" default=""/>
+  <arg name="filtered_pc_topic" default=""/>
+  <arg name="camera_info_topic" default=""/>
+  <arg name="pc_topic" default=""/>
+  <arg name="img_pose_topic" default=""/>
+  <arg name="text_prompt_topic" default=""/>
+  <arg name="predicted_pointcloud_topic" default=""/>
+  <arg name="partial_pointcloud_topic" default=""/>
+  <arg name="predicted_mesh_topic" default=""/>
+  <arg name="mesh_vis_topic" default=""/>
+  <arg name="predicted_input_imgs_topic" default=""/>
+  <arg name="debug_dump_dir" default=""/>
+  <arg name="debug_dump_once" default="false"/>
+  <arg name="nksr_scale" default=""/>
+  <arg name="mesh_min_z_offset" default=""/>
+  <arg name="recall_threshold" default=""/>
+  <arg name="recall_distance_threshold" default=""/>
+  <arg name="pose_alignment_mode" default=""/>
+
+
+  <node pkg="mesh_predict" name="mesh_predict_node" type="mesh_predict_node.py" output="screen" clear_params="true">
+
+    <param name="profile_config_path" value="$(arg profile_config_path)" type="string"/>
+    <param unless="$(eval arg('camera_param') == '')" name="camera_param" value="$(arg camera_param)" type="string"/>
+    <param name="runtime_config_path" value="$(arg runtime_config_path)" type="string"/>
+    <param unless="$(eval arg('mesh_pred_ckpt_path') == '')" name="mesh_pred_ckpt_path" value="$(arg mesh_pred_ckpt_path)" type="string"/>
+    <param name="filtered_pc_topic" value="$(arg filtered_pc_topic)" type="string"/>
+    <param unless="$(eval arg('pc_topic') == '')" name="pc_topic" value="$(arg pc_topic)" type="string"/>
+    <param unless="$(eval arg('img_pose_topic') == '')" name="img_pose_topic" value="$(arg img_pose_topic)" type="string"/>
+    <param unless="$(eval arg('text_prompt_topic') == '')" name="text_prompt_topic" value="$(arg text_prompt_topic)" type="string"/>
+    <param unless="$(eval arg('camera_info_topic') == '')" name="camera_info_topic" value="$(arg camera_info_topic)" type="string"/>
+    <param unless="$(eval arg('predicted_pointcloud_topic') == '')" name="predicted_pointcloud_topic" value="$(arg predicted_pointcloud_topic)" type="string"/>
+    <param unless="$(eval arg('partial_pointcloud_topic') == '')" name="partial_pointcloud_topic" value="$(arg partial_pointcloud_topic)" type="string"/>
+    <param unless="$(eval arg('predicted_mesh_topic') == '')" name="predicted_mesh_topic" value="$(arg predicted_mesh_topic)" type="string"/>
+    <param unless="$(eval arg('mesh_vis_topic') == '')" name="mesh_vis_topic" value="$(arg mesh_vis_topic)" type="string"/>
+    <param unless="$(eval arg('predicted_input_imgs_topic') == '')" name="predicted_input_imgs_topic" value="$(arg predicted_input_imgs_topic)" type="string"/>
+    <param name="debug_dump_dir" value="$(arg debug_dump_dir)" type="string"/>
+    <param name="debug_dump_once" value="$(arg debug_dump_once)" type="bool"/>
+    <param unless="$(eval arg('nksr_scale') == '')" name="nksr_scale" value="$(arg nksr_scale)" type="double"/>
+    <param unless="$(eval arg('mesh_min_z_offset') == '')" name="mesh_min_z_offset" value="$(arg mesh_min_z_offset)" type="double"/>
+    <param unless="$(eval arg('recall_threshold') == '')" name="recall_threshold" value="$(arg recall_threshold)" type="double"/>
+    <param unless="$(eval arg('recall_distance_threshold') == '')" name="recall_distance_threshold" value="$(arg recall_distance_threshold)" type="double"/>
+    <param unless="$(eval arg('pose_alignment_mode') == '')" name="pose_alignment_mode" value="$(arg pose_alignment_mode)" type="string"/>
+
+  </node>
+
+</launch>

@@ -1,0 +1,222 @@
+<launch>
+  <!-- ! Topic -->
+  <arg name="odom_topic"               default="/airsim_node/drone_1/odom_local_enu"/>
+  <arg name="gimbal_topic"             default="/gimbal_pose"/>
+  <arg name="lidar_topic"              default="/airsim_node/drone_1/world_lidar_cloud"/>
+  <arg name="depth_topic"              default="/airsim_node/drone_1/front_center/DepthPerspective"/>
+  <arg name="img_topic"                default="/airsim_node/drone_1/front_center/Scene"/>
+  <arg name="rgbd_topic"               default="/airsim_node/drone_1/world_img_rgb_pcd"/>
+  <arg name="tracking_allpc_topic"     default="/tracking/all_pc"/>
+  <arg name="tracking_target_topic"    default="/tracking/target_pc"/>
+  <arg name="tracking_env_topic"       default="/tracking/env_pc"/>
+  <arg name="tracking_pose_topic"      default="/tracking/pose"/>
+  <arg name="prediction_partial_topic" default="/pred/input_partial"/>
+  <arg name="prediction_mesh_topic"    default="/prediction/predicted_mesh"/>
+
+  <!-- ! Parameters -->
+  <arg name="scenario"/>
+  <arg name="map_size_x"/>
+  <arg name="map_size_y"/>
+  <arg name="map_size_z"/>
+  <arg name="map_back_x"/>
+  <arg name="map_back_y"/>
+  <arg name="virtual_ceil"/>
+  <arg name="ground_height"/>
+  <arg name="ground_pos"/>
+  <arg name="top_height"/>
+  <arg name="max_visible_dist"/>
+  <arg name="mapping_vis_z_max"/>
+  <arg name="mapping_vis_z_min"/>
+  <arg name="local_length"/>
+  <arg name="global_overlap"/>
+  <arg name="coverage_objective"/>
+  <arg name="max_cvx_range"/>
+  <arg name="global_solving"/>
+  <arg name="vis_inf"/>
+  <arg name="tsp_horizon"/>
+
+  <arg name="resolution"        default="0.15"/>
+  <arg name="fov_vis_scale"     default="1.0"/>
+  <arg name="vp_sample_dist"    default="8.0"/>
+  <arg name="vp_max_vis_dist"   default="10.0"/>
+  <arg name="pitch_upper_degs"  default="35.0"/>
+  <arg name="pitch_lower_degs"  default="-90.0"/>
+  <arg name="fov_h"             default="55.0"/>
+  <arg name="fov_w"             default="70.0"/>
+  <arg name="max_vel"           default="1.0"/>
+  <arg name="max_acc"           default="5.0"/>
+  <arg name="max_jer"           default="10.0"/>
+  <arg name="max_yd"            default="20.0"/>
+  <arg name="drone_radius"      default="0.25"/>
+  <arg name="ground_constraint" default="true"/>
+  <arg name="mesh_sample_size"  default="5000"/>
+
+  <!-- ! Path Searching ! -->
+  <include file="$(find flyco_planner_manager)/launch/modules/path_searching.xml">
+    <arg name="node_ns" value="flyco_planner"/>
+    <arg name="astar_resolution_astar" value="$(arg resolution)"/>
+  </include>
+
+  <!-- ! Dual Mapping ! -->
+  <include file="$(find flyco_planner_manager)/launch/modules/dual_mapping.xml">
+    <arg name="node_ns" value="flyco_planner"/>
+    <arg name="hcmap_resolution" value="$(arg resolution)"/>
+    <arg name="sdf_map_resolution" value="$(arg resolution)"/>
+    <arg name="sdf_map_size_x" value="$(arg map_size_x)"/>
+    <arg name="sdf_map_size_y" value="$(arg map_size_y)"/>
+    <arg name="sdf_map_size_z" value="$(arg map_size_z)"/>
+    <arg name="sdf_map_back_x" value="$(arg map_back_x)"/>
+    <arg name="sdf_map_back_y" value="$(arg map_back_y)"/>
+    <arg name="sdf_map_ground_height" value="$(arg ground_height)"/>
+    <arg name="sdf_map_virtual_ceil_height" value="$(arg virtual_ceil)"/>
+    <arg name="sdf_map_max_ray_length" value="$(arg max_visible_dist)"/>
+    <arg name="map_ros_visualization_truncate_height" value="$(arg mapping_vis_z_max)"/>
+    <arg name="map_ros_visualization_truncate_low" value="$(arg mapping_vis_z_min)"/>
+  </include>
+
+  <!-- ! Skeleton-based Space Decomposition ! -->
+  <include file="$(find flyco_planner_manager)/launch/modules/skeleton_space_decomposition.xml">
+    <arg name="node_ns" value="flyco_planner"/>
+    <arg name="input_resolution" value="$(arg resolution)"/>
+  </include>
+
+  <!-- ! Path Solver ! -->
+  <include file="$(find flyco_planner_manager)/launch/modules/path_solver.xml">
+    <arg name="node_ns" value="flyco_planner"/>
+    <arg name="hcplanner_vmax" value="$(arg max_vel)"/>
+    <arg name="hcplanner_amax" value="$(arg max_acc)"/>
+    <arg name="hcplanner_jmax" value="$(arg max_jer)"/>
+    <arg name="hcplanner_ydmax" value="$(eval arg('max_yd')*3.1415926/180.0)"/>
+    <arg name="hcplanner_local_range" value="$(arg local_length)"/>
+    <arg name="hcplanner_overlap_length" value="$(arg global_overlap)"/>
+    <arg name="hcplanner_global_solving" value="$(arg global_solving)"/>
+  </include>
+
+  <!-- ! Viewpoint Generation ! -->
+  <include file="$(find flyco_planner_manager)/launch/modules/viewpoint_generation.xml">
+    <arg name="node_ns" value="flyco_planner"/>
+    <arg name="viewpoint_visible_range" value="$(arg vp_max_vis_dist)"/>
+    <arg name="viewpoint_distance" value="$(arg vp_sample_dist)"/>
+    <arg name="viewpoint_fov_h" value="$(arg fov_h)"/>
+    <arg name="viewpoint_fov_w" value="$(arg fov_w)"/>
+    <arg name="viewpoint_pitch_upper" value="$(arg pitch_upper_degs)"/>
+    <arg name="viewpoint_pitch_lower" value="$(arg pitch_lower_degs)"/>
+    <arg name="viewpoint_z_ground" value="$(arg ground_constraint)"/>
+    <arg name="viewpoint_ground_pos" value="$(arg ground_pos)"/>
+    <arg name="viewpoint_top_pos" value="$(arg top_height)"/>
+    <arg name="viewpoint_resolution" value="$(arg resolution)"/>
+    <arg name="viewpoint_vis_inf" value="$(arg vis_inf)"/>
+  </include>
+
+  <!-- ! Coverage Path Planner ! -->
+  <include file="$(find flyco_planner_manager)/launch/modules/coverage_path_planner.xml">
+    <arg name="node_ns" value="flyco_planner"/>
+    <arg name="hcplanner_mesh_sample_size" value="$(arg mesh_sample_size)"/>
+    <arg name="hcplanner_max_cvx_range" value="$(arg max_cvx_range)"/>
+    <arg name="hcplanner_tsp_horizon" value="$(arg tsp_horizon)"/>
+    <arg name="hcplanner_suspension_rate" value="$(arg coverage_objective)"/>
+  </include>
+
+  <!-- ! Viewpoint-constrained Trajectory Optimization ! -->
+  <include file="$(find flyco_planner_manager)/launch/modules/viewpoint_constrained_traj_opt.xml">
+    <arg name="node_ns" value="flyco_planner"/>
+    <arg name="hctraj_drone_radius" value="$(arg drone_radius)"/>
+    <arg name="hctraj_vmax" value="$(arg max_vel)"/>
+    <arg name="hctraj_amax" value="$(arg max_acc)"/>
+    <arg name="hctraj_jmax" value="$(arg max_jer)"/>
+    <arg name="hctraj_ydmax" value="$(eval arg('max_yd')*3.1415926/180.0)"/>
+  </include>
+
+  <!-- ! Async Planning FSM ! -->
+  <include file="$(find flyco_planner_manager)/launch/modules/async_planning_fsm.xml">
+    <arg name="node_ns" value="flyco_planner"/>
+  </include>
+
+  <node pkg="flyco_planner_manager" name="flyco_planner" type="flyco_planner" output="screen">
+    <!-- ! Manager -->
+    <!-- ? Topic -->
+    <remap from ="/flyco_planner/body_pose"        to="$(arg odom_topic)"/>
+    <remap from ="/flyco_planner/gimbal_pose"      to="$(arg gimbal_topic)"/>
+    <remap from ="/flyco_planner/predicted_mesh"   to="$(arg prediction_mesh_topic)"/>
+    <remap from ="/prediction/predicted_mesh" to="$(arg prediction_mesh_topic)"/>
+
+    <remap from ="/map_ros/pose"                  to="$(arg odom_topic)"/>
+    <remap from ="/map_ros/depth"                 to="$(arg depth_topic)"/>
+    <remap from ="/map_ros/cloud"                 to="$(arg lidar_topic)"/>
+    <remap from ="/map_ros/tracking_all_cloud"    to="$(arg tracking_allpc_topic)"/>
+    <remap from ="/map_ros/tracking_target_cloud" to="$(arg tracking_target_topic)"/>
+    <remap from ="/map_ros/tracking_env_cloud"    to="$(arg tracking_env_topic)"/>
+    <remap from ="/map_ros/tracking_pose"         to="$(arg tracking_pose_topic)"/>
+
+    <remap from ="/map_ros/partial_observation"   to="$(arg prediction_partial_topic)"/>
+    
+    <!-- ? Parameters -->
+    <param name="flyco_planner/sim"              value="true" type="bool"/>
+    <param name="flyco_planner/init_traj"        value="true" type="bool"/>
+    <param name="flyco_planner/enable_inherit"   value="false"/>
+    <param name="flyco_planner/init_path_file"   value="$(find flyco_planner_manager)/config/init_path/$(arg scenario)/initial_waypts.yaml" type="string"/>
+
+    <param name="perception_utils/top_angle"   value="$(eval arg('fov_h')*3.1415926/360.0)" type="double"/>
+    <param name="perception_utils/left_angle"  value="$(eval arg('fov_w')*3.1415926/360.0)" type="double"/>
+    <param name="perception_utils/right_angle" value="$(eval arg('fov_w')*3.1415926/360.0)" type="double"/>
+    <param name="perception_utils/max_dist"    value="$(arg vp_max_vis_dist)" type="double"/>
+    <param name="perception_utils/vis_dist"    value="$(arg fov_vis_scale)" type="double"/>
+  </node>
+
+  <node pkg="flyco_planner_manager" name="traj_server" type="traj_server" output="screen">
+    <remap from="/traj_server/odom"       to="$(arg odom_topic)"/>
+    <remap from="/traj_server/gimbal"     to="$(arg gimbal_topic)"/>
+    <remap from="/traj_server/pos_cmd"    to="planning/pos_cmd"/>
+    <remap from="/traj_server/gimbal_cmd" to="/gimbal_angle_euler_cmd"/>
+    
+    <param name="traj_server/max_vel" value="$(arg max_vel)" type="double"/>
+    <param name="traj_server/fov_h"   value="$(arg fov_h)" type="double"/>
+    <param name="traj_server/fov_w"   value="$(arg fov_w)" type="double"/>
+
+    <param name="traj_server/pitch_upper" value="$(arg pitch_upper_degs)" type="double"/>
+    <param name="traj_server/pitch_lower" value="$(arg pitch_lower_degs)" type="double"/>
+    <param name="traj_server/radius"      value="$(arg drone_radius)" type="double"/>
+
+    <param name="perception_utils/top_angle"   value="$(eval arg('fov_h')*3.1415926/360.0)" type="double"/>
+    <param name="perception_utils/left_angle"  value="$(eval arg('fov_w')*3.1415926/360.0)" type="double"/>
+    <param name="perception_utils/right_angle" value="$(eval arg('fov_w')*3.1415926/360.0)" type="double"/>
+    <param name="perception_utils/max_dist"    value="$(arg vp_max_vis_dist)" type="double"/>
+    <param name="perception_utils/vis_dist"    value="3.0" type="double"/>
+
+    <param name="traj_server/enable_inherit" value="false"/>
+  </node>
+
+  <node pkg="rgb_point_map" name="rgb_point_mapping_node" type="rgb_point_mapping_node" output="screen">
+    <!-- ! Subscribed Topic ! -->
+    <remap from ="/rgb_mapping/rgbd"        to="$(arg rgbd_topic)"/>
+    <remap from ="/rgb_mapping/img"         to="$(arg img_topic)"/>
+    <remap from ="/rgb_mapping/body_pose"   to="$(arg odom_topic)"/>
+    <remap from ="/rgb_mapping/gimbal_pose" to="$(arg gimbal_topic)"/>
+
+    <!-- ! Parameters ! -->
+    <param name="rgb_mapping/voxel_size" value="0.05"/>
+    <param name="rgb_mapping/chunk_size" value="32" type="int"/>
+    <param name="rgb_mapping/origin_x"   value="-20.0"/>
+    <param name="rgb_mapping/origin_y"   value="-100.0"/>
+    <param name="rgb_mapping/origin_z"   value="-5.0"/>
+    <param name="rgb_mapping/map_size_x" value="200.0"/>
+    <param name="rgb_mapping/map_size_y" value="200.0"/>
+    <param name="rgb_mapping/map_size_z" value="80.0"/>
+    <param name="rgb_mapping/en_inherit" value="false" type="bool"/>
+		<param name="rgb_mapping/fx"         value="381.36114501953125" type="double"/>
+		<param name="rgb_mapping/fy"         value="381.36114501953125" type="double"/>
+		<param name="rgb_mapping/cx"         value="320.0" type="double"/>
+		<param name="rgb_mapping/cy"         value="240.0" type="double"/>
+    <param name="rgb_mapping/img_rows"   value="480" type="int"/>
+    <param name="rgb_mapping/img_cols"   value="640" type="int"/>
+    <param name="rgb_mapping/fov_scale"  value="3.0" type="double"/>
+    <param name="rgb_mapping/c2b_x"      value="0.0" type="double"/>
+    <param name="rgb_mapping/c2b_y"      value="0.0" type="double"/>
+    <param name="rgb_mapping/c2b_z"      value="0.0" type="double"/>
+    <param name="rgb_mapping/c2b_roll"   value="0.0" type="double"/>
+    <param name="rgb_mapping/c2b_pitch"  value="0.0" type="double"/>
+    <param name="rgb_mapping/c2b_yaw"    value="0.0" type="double"/>
+    <param name="rgb_mapping/model"      value="$(find rgb_point_map)/check_scene/$(arg scenario)/model.ply"/>
+  </node>
+
+</launch>

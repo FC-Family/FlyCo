@@ -1,0 +1,12 @@
+# Catkin build artifacts
+build/
+devel/
+install/
+log/
+perception_predictor/build/
+perception_predictor/devel/
+
+# Python cache artifacts
+__pycache__/
+*.py[cod]
+.omx

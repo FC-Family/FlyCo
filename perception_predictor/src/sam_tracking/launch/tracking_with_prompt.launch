@@ -1,0 +1,27 @@
+<launch>
+  <arg name="config_file" default="$(find sam_tracking)/config/tracking.yaml" />
+  <rosparam file="$(arg config_file)" command="load" subst_value="true" />
+  <arg name="input_query_points_topic" default="/query_points" />
+  <arg name="input_query_text_topic" default="/query_text" />
+  <arg name="query_points_topic" default="/tracking/prompt/points" />
+  <arg name="query_text_topic" default="/tracking/prompt/text" />
+  <arg name="image_topic" default="" />
+  <arg name="pointcloud_topic" default="" />
+  <arg name="odometry_topic" default="" />
+
+  <include file="$(find sam_tracking)/launch/tracking.launch">
+    <arg name="config_file" value="$(arg config_file)" />
+    <arg name="query_points_topic" value="$(arg query_points_topic)" />
+    <arg name="query_text_topic" value="$(arg query_text_topic)" />
+    <arg name="image_topic" value="$(arg image_topic)" />
+    <arg name="pointcloud_topic" value="$(arg pointcloud_topic)" />
+    <arg name="odometry_topic" value="$(arg odometry_topic)" />
+  </include>
+
+  <include file="$(find sam_tracking)/launch/prompt.launch">
+    <arg name="input_query_points_topic" value="$(arg input_query_points_topic)" />
+    <arg name="input_query_text_topic" value="$(arg input_query_text_topic)" />
+    <arg name="query_points_topic" value="$(arg query_points_topic)" />
+    <arg name="query_text_topic" value="$(arg query_text_topic)" />
+  </include>
+</launch>

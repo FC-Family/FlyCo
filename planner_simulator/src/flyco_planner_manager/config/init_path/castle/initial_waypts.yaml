@@ -1,0 +1,4 @@
+path:
+  - waypoints:
+    # castle
+    - [1.0, 0.0, 13.0, 1.0, 3.0]

@@ -1,0 +1,36 @@
+<launch>
+  <arg name="node_ns" default="flyco_planner"/>
+
+  <arg name="hcplanner_model_downsample_size" default="0.6"/>
+  <arg name="hcplanner_mesh_sample_size" default="5000"/>
+  <arg name="hcplanner_max_cvx_range" default="8.0"/>
+  <arg name="hcplanner_tsp_horizon" default="20.0"/>
+  <arg name="hcplanner_match_num" default="1"/>
+  <arg name="hcplanner_safe_inner_dist_coeff" default="1.1"/>
+  <arg name="hcplanner_amean" default="0.2"/>
+  <arg name="hcplanner_tripod_head" default="false"/>
+  <arg name="hcplanner_sample_step4normal" default="1.0"/>
+  <arg name="hcplanner_exec_mode" default="release"/>
+  <arg name="hcplanner_suspension_rate" default="99.5"/>
+  <arg name="hcplanner_gs_size" default="3.0"/>
+  <arg name="hcplanner_g_flight_h" default="1.7"/>
+  <arg name="hcplanner_g_sample_dist" default="5.0"/>
+
+  <group ns="$(arg node_ns)">
+    <!-- ! Coverage Path Planner ! -->
+    <param name="hcplanner/model_downsample_size" value="$(arg hcplanner_model_downsample_size)" type="double"/>
+    <param name="hcplanner/mesh_sample_size"      value="$(arg hcplanner_mesh_sample_size)" type="int"/>
+    <param name="hcplanner/max_cvx_range"         value="$(arg hcplanner_max_cvx_range)" type="double"/>
+    <param name="hcplanner/tsp_horizon"           value="$(arg hcplanner_tsp_horizon)" type="double"/>
+    <param name="hcplanner/match_num"             value="$(arg hcplanner_match_num)" type="int"/>
+    <param name="hcplanner/safe_inner_dist_coeff" value="$(arg hcplanner_safe_inner_dist_coeff)" type="double"/>
+    <param name="hcplanner/amean_"                value="$(arg hcplanner_amean)" type="double"/>
+    <param name="hcplanner/tripod_head"           value="$(arg hcplanner_tripod_head)" type="bool"/>
+    <param name="hcplanner/sample_step4normal"    value="$(arg hcplanner_sample_step4normal)" type="double"/>
+    <param name="hcplanner/exec_mode"             value="$(arg hcplanner_exec_mode)" type="string"/> <!-- mode : debug or release -->
+    <param name="hcplanner/suspension_rate"       value="$(arg hcplanner_suspension_rate)" type="double"/>
+    <param name="hcplanner/gs_size"               value="$(arg hcplanner_gs_size)" type="double"/>
+    <param name="hcplanner/g_flight_h"            value="$(arg hcplanner_g_flight_h)" type="double"/>
+    <param name="hcplanner/g_sample_dist"         value="$(arg hcplanner_g_sample_dist)" type="double"/>
+  </group>
+</launch>

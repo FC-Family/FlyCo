@@ -1,0 +1,53 @@
+<launch>
+  <arg name="node_ns" default="flyco_planner"/>
+
+  <arg name="hcplanner_precision" default="100"/>
+  <arg name="hcplanner_global_solver" default="$(find hierarchical_coverage_planner)/solution/LKH"/>
+  <arg name="hcplanner_global_par_file" default="$(find hierarchical_coverage_planner)/solution/global/global.par"/>
+  <arg name="hcplanner_global_problem_file" default="$(find hierarchical_coverage_planner)/solution/global/global.tsp"/>
+  <arg name="hcplanner_global_result_file" default="$(find hierarchical_coverage_planner)/solution/global/global.txt"/>
+  <arg name="hcplanner_global_runs" default="1"/>
+  <arg name="hcplanner_local_folder" default="$(find hierarchical_coverage_planner)/solution/local"/>
+  <arg name="hcplanner_local_runs" default="1"/>
+  <arg name="hcplanner_boundary_solver" default="$(find hierarchical_coverage_planner)/solution/CPP"/>
+
+  <arg name="hcplanner_vmax" default="1.0"/>
+  <arg name="hcplanner_amax" default="3.0"/>
+  <arg name="hcplanner_jmax" default="5.0"/>
+  <arg name="hcplanner_ydmax" default="0.34906584444444444"/>
+  <arg name="hcplanner_joint_radius" default="1.5"/>
+  <arg name="hcplanner_local2opt_trial" default="10000"/>
+  <arg name="hcplanner_localrefine_time" default="200.0"/>
+  <arg name="hcplanner_local_range" default="10.0"/>
+  <arg name="hcplanner_overlap_length" default="10.0"/>
+  <arg name="hcplanner_global_consistency" default="true"/>
+  <arg name="hcplanner_sub_consistent" default="true"/>
+  <arg name="hcplanner_open_chamfer" default="true"/>
+  <arg name="hcplanner_global_solving" default="50.0"/>
+
+  <group ns="$(arg node_ns)">
+    <!-- ! Path Solver ! -->
+    <param name="hcplanner/precision_"          value="$(arg hcplanner_precision)" type="int"/>
+    <param name="hcplanner/global_solver"       value="$(arg hcplanner_global_solver)" type="string"/>
+    <param name="hcplanner/global_par_file"     value="$(arg hcplanner_global_par_file)" type="string"/>
+    <param name="hcplanner/global_problem_file" value="$(arg hcplanner_global_problem_file)" type="string"/>
+    <param name="hcplanner/global_result_file"  value="$(arg hcplanner_global_result_file)" type="string"/>
+    <param name="hcplanner/global_runs"         value="$(arg hcplanner_global_runs)" type="int"/>
+    <param name="hcplanner/local_folder"        value="$(arg hcplanner_local_folder)" type="string"/>
+    <param name="hcplanner/local_runs"          value="$(arg hcplanner_local_runs)" type="int"/>
+    <param name="hcplanner/boundary_solver"     value="$(arg hcplanner_boundary_solver)" type="string"/>
+    <param name="hcplanner/vmax_"               value="$(arg hcplanner_vmax)" type="double"/>
+    <param name="hcplanner/amax_"               value="$(arg hcplanner_amax)" type="double"/>
+    <param name="hcplanner/jmax_"               value="$(arg hcplanner_jmax)" type="double"/>
+    <param name="hcplanner/ydmax_"              value="$(arg hcplanner_ydmax)" type="double"/>
+    <param name="hcplanner/JointRadius"         value="$(arg hcplanner_joint_radius)" type="double"/>
+    <param name="hcplanner/local2opt_trial"     value="$(arg hcplanner_local2opt_trial)" type="int"/>
+    <param name="hcplanner/localrefine_time"    value="$(arg hcplanner_localrefine_time)" type="double"/>
+    <param name="hcplanner/localRange"          value="$(arg hcplanner_local_range)" type="double"/>
+    <param name="hcplanner/overlap_length"      value="$(arg hcplanner_overlap_length)" type="double"/>
+    <param name="hcplanner/global_consistency"  value="$(arg hcplanner_global_consistency)" type="bool"/>
+    <param name="hcplanner/sub_consistent"      value="$(arg hcplanner_sub_consistent)" type="bool"/>
+    <param name="hcplanner/open_chamfer"        value="$(arg hcplanner_open_chamfer)" type="bool"/>
+    <param name="hcplanner/global_solving"      value="$(arg hcplanner_global_solving)" type="double"/>
+  </group>
+</launch>

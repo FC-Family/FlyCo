@@ -1,0 +1,4 @@
+path:
+  - waypoints:
+    # statue
+    - [0.0, 0.0, 9.0, 25.0, 0.0]

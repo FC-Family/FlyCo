@@ -1,0 +1,41 @@
+{
+  "camera": {
+    "camera_model": "plumb_bob",
+    "distortion_coeffs": [],
+    "intrinsics": [
+      381.36114501953125,
+      381.36114501953125,
+      320.0,
+      240.0
+    ]
+  },
+  "meta": {
+    "camera_info_topic": "/airsim_node/drone_1/front_center/Scene/camera_info",
+    "data_path": "airsim_default",
+    "image_topic": "/airsim_node/drone_1/front_center/Scene",
+    "intensity_channel": "",
+    "points_topic": "/airsim_node/drone_1/world_lidar_cloud"
+  },
+  "results": {
+    "T_lidar_camera": [
+      0.125,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "init_T_lidar_camera": [
+      0.125,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  },
+  "width": 640,
+  "height": 480
+}

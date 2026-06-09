@@ -1,0 +1,114 @@
+setting:
+  batch_size: 1
+  num_workers: 1
+  pretrain_path: "resources/checkpoints/pmp.pt"
+  autocast: true
+
+data:
+  cond_width: 252
+  cond_height: 252
+
+system:
+  model_cls: mesh_predict.pmp.models.model_mesh.PMPMesh
+  weights: ${setting.pretrain_path}
+  weights_ignore_modules:
+    - "pointcloud_generator.backbone"
+    - "pointcloud_generator.pointcloud_upsampling"
+    - "pointcloud_generator.text_encoder.model.logit_scale"
+  pointcloud_generator_cls: mesh_predict.pmp.models.pointclouds.simplepoint.TextFusionPointGenerator
+  mesh_input_key: "pc"
+  pointcloud_generator:
+    camera_embedder_cls: mesh_predict.pmp.models.utils.networks.MLP
+    camera_embedder:
+      dim_in: 25
+      dim_out: 768
+      n_neurons: 768
+      n_hidden_layers: 1
+      activation: silu
+
+    image_tokenizer_cls: mesh_predict.pmp.models.tokenizers.image.DINOV2SingleImageTokenizer
+    image_tokenizer:
+      pretrained_model_name_or_path: "facebook/dinov2-base"
+      width: ${data.cond_width}
+      height: ${data.cond_height}
+      modulation: true
+      modulation_zero_init: true
+      modulation_single_layer: true
+      modulation_cond_dim: ${system.pointcloud_generator.camera_embedder.dim_out}
+      freeze_backbone_params: true
+      enable_memory_efficient_attention: false
+      enable_gradient_checkpointing: true
+      freeze_camera_emb: false
+      freeze: true
+
+    pointcloud_embedding_cls: mesh_predict.pmp.models.tokenizers.point.PointLearnablePositionalEmbedding
+    pointcloud_embedding:
+      num_pcl: 2048
+      num_channels: 512
+      freeze: false
+
+    pointcloud_encoder_cls: mesh_predict.pmp.models.pc_encoder.pointnet.PointNet2
+    pointcloud_encoder:
+      channels: 3
+      pts_list: [2048, 1024, 256, 64]
+      pt_dim: 512
+
+    text_encoder_cls: mesh_predict.pmp.models.tokenizers.siglip_encoder.SigLIPEncoder
+    text_encoder:
+      checkpoint: "google/siglip-base-patch16-224"
+      freeze: true
+
+    backbone_cls: mesh_predict.pmp.models.utils.transformers.Transformer1D
+    backbone:
+      in_channels: 512
+      num_attention_heads: 8
+      attention_head_dim: 64
+      num_layers: 10
+      cross_attention_dim: 768
+      norm_type: "layer_norm"
+      enable_memory_efficient_attention: false
+      gradient_checkpointing: true
+      attention_type: "gated"
+      dropout: 0.0
+
+    post_processor_cls: mesh_predict.pmp.models.utils.networks.PointOutLayer
+    post_processor:
+      in_channels: 512
+      out_channels: 3
+
+    pointcloud_upsampling_cls: ""
+    pointcloud_upsampling: {}
+
+    use_concat_self_attn: false
+    use_alternating_fusion: true
+    projection_dropout: 0.0
+    alternating_gradient_checkpointing: false
+    alternating_enable_memory_efficient_attention: false
+    enable_upsampling: false
+    detach_upsampling_input: true
+    upsampling_repeat_levels: 1
+    upsampling_jitter_sigma: 0.0
+
+  mesh_decoder_cls: mesh_predict.pmp.models.mesh.nksr_decoder.NKSRDecoder
+  mesh_decoder:
+    adaptive_depth: 1
+    tree_depth: 4
+    voxel_size: 0.02
+    density_range: "none"
+    solver:
+      normal_weight: 1e4
+      pos_weight: 1e4
+    udf:
+      enabled: false
+    adaptive_policy:
+      tau: false
+    feature: "none"
+    geometry: "kernel"
+    kernel_dim: 16
+    unet:
+      f_maps: 32
+    interpolator:
+      n_hidden: 2
+      hidden_dim: 32
+    freeze: true
+    checkpoint_url: ""

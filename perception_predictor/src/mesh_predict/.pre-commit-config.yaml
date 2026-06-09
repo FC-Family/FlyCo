@@ -1,0 +1,40 @@
+exclude: 'build|egg-info|dist'
+
+default_language_version:
+    python: python3
+
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+    -   id: trailing-whitespace
+    -   id: check-added-large-files
+    -   id: end-of-file-fixer
+
+-   repo: https://github.com/asottile/seed-isort-config
+    rev: v2.2.0
+    hooks:
+    -   id: seed-isort-config
+        language_version: python3
+
+# -   repo: https://github.com/pre-commit/mirrors-isort
+#     rev: v5.10.1
+#     hooks:
+#     -   id: isort
+#         exclude: docs/
+#         additional_dependencies: [toml]
+
+-   repo: https://github.com/ambv/black
+    rev: 24.4.2
+    hooks:
+    - id: black
+      language_version: python3
+
+-   repo: local
+    hooks:
+    - id: clang-format
+      name: Run clang-format
+      entry: clang-format --style google -i
+      types: [text]
+      files: '.*\.cpp$|.*\.h$|.*\.cu$|.*\.hpp$'
+      language: system

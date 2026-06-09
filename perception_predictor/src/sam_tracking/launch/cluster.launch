@@ -1,0 +1,70 @@
+<launch>
+  <!-- 定义外部参数 -->
+  <arg name="config_file" default="$(find sam_tracking)/config/cluster.yaml" />
+  <arg name="inheritance_enable" default="False" />
+  <arg name="load_path" default="$(find sam_tracking)/artifacts/cluster" />
+  <arg name="save_path" default="$(find sam_tracking)/artifacts/cluster" />
+  <arg name="guide_pointcloud_topic" default="/tracking/guider_pc" />
+  <arg name="input_pointcloud_topic" default="/tracking/input/pointcloud" />
+  <arg name="input_odometry_topic" default="/tracking/input/odometry" />
+  <arg name="cluster_target_pointcloud_topic" default="/tracking/target_pc" />
+  <arg name="cluster_environment_pointcloud_topic" default="/tracking/env_pc" />
+  <arg name="cluster_pose_topic" default="/tracking/pose" />
+  <arg name="cluster_algorithm" default="incremental_euclidean" />
+  <arg name="dbscan_core_min_points" default="1" />
+  <arg name="ground_filter_mode" default="off" />
+  <arg name="ground_filter_margin" default="0.3" />
+  <arg name="target_refine_mode" default="guide_radius" />
+  <arg name="target_refine_radius" default="20.0" />
+  <arg name="min_height" default="" />
+  <arg name="cluster_tolerance" default="" />
+  <arg name="cluster_min_x" default="" />
+  <arg name="cluster_max_x" default="" />
+  <arg name="cluster_min_y" default="" />
+  <arg name="cluster_max_y" default="" />
+  <arg name="cluster_min_z" default="" />
+  <arg name="cluster_max_z" default="" />
+  <rosparam file="$(arg config_file)" command="load" subst_value="true" />
+
+  <!-- 启动点云处理节点 -->
+  <node pkg="sam_tracking" type="sam_tracking_node" name="sam_tracking_node" output="screen">
+    <!-- 重映射设置 -->
+
+    <param name="inheritance_enable" value="$(arg inheritance_enable)" />
+    <param name="load_path" value="$(arg load_path)" />
+    <param name="save_path" value="$(arg save_path)" />
+
+    <!-- 动态拼接路径 -->
+    <param name="inheritance_all_pc_path" value="$(arg load_path)/all_pc_saved.pcd" />
+    <param name="inheritance_target_pc_path" value="$(arg load_path)/target_pc_saved.pcd" />
+    <param name="inheritance_raw_all_point_path" value="$(arg load_path)/raw_all_pc_saved.pcd" />
+
+    <param name="save_all_pc_path" value="$(arg save_path)/all_pc_saved.pcd" />
+    <param name="save_target_pc_path" value="$(arg save_path)/target_pc_saved.pcd" />
+    <param name="save_raw_all_pc_path" value="$(arg save_path)/raw_all_pc_saved.pcd" />
+    <param name="all_point_topic" value="$(arg input_pointcloud_topic)" />
+    <param name="target_point_topic" value="$(arg guide_pointcloud_topic)" />
+    <param name="cluster_algorithm" value="$(arg cluster_algorithm)" />
+    <param name="dbscan_core_min_points" value="$(arg dbscan_core_min_points)" />
+    <param if="$(eval arg('min_height') != '')" name="min_height" value="$(arg min_height)" />
+    <param if="$(eval arg('cluster_tolerance') != '')" name="cluster_tolerance" value="$(arg cluster_tolerance)" />
+    <param if="$(eval arg('cluster_min_x') != '')" name="cluster_min_x" value="$(arg cluster_min_x)" />
+    <param if="$(eval arg('cluster_max_x') != '')" name="cluster_max_x" value="$(arg cluster_max_x)" />
+    <param if="$(eval arg('cluster_min_y') != '')" name="cluster_min_y" value="$(arg cluster_min_y)" />
+    <param if="$(eval arg('cluster_max_y') != '')" name="cluster_max_y" value="$(arg cluster_max_y)" />
+    <param if="$(eval arg('cluster_min_z') != '')" name="cluster_min_z" value="$(arg cluster_min_z)" />
+    <param if="$(eval arg('cluster_max_z') != '')" name="cluster_max_z" value="$(arg cluster_max_z)" />
+    <param name="ground_filter_mode" value="$(arg ground_filter_mode)" />
+    <param name="ground_filter_margin" value="$(arg ground_filter_margin)" />
+    <param name="target_refine_mode" value="$(arg target_refine_mode)" />
+    <param name="target_refine_radius" value="$(arg target_refine_radius)" />
+    <remap from="/cluster/target_pc" to="$(arg cluster_target_pointcloud_topic)" />
+    <remap from="/cluster/env_pc" to="$(arg cluster_environment_pointcloud_topic)" />
+    <remap from="/cluster/target_pose" to="$(arg cluster_pose_topic)" />
+
+    <!-- 接收 topic -->
+    <remap from="/cluster/guide_pc" to="$(arg guide_pointcloud_topic)" />
+    <remap from="/cluster/pointcloud" to="$(arg input_pointcloud_topic)" />
+    <remap from="/cluster/pose" to="$(arg input_odometry_topic)" />
+  </node>
+</launch>

@@ -1,0 +1,19 @@
+{
+  "camera": {
+    "camera_model": "plumb_bob",
+    "distortion_coeffs": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "intrinsics": [
+      381.0,
+      381.0,
+      320.0,
+      240.0
+    ]
+  },
+  "width": 640,
+  "height": 480
+}

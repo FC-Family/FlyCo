@@ -1,0 +1,4 @@
+PROBLEM_FILE = /home/star/chen/FlyCo/open_source/planner_simulator/src/hierarchical_coverage_planner/solution/local/solver_tools.tsp
+GAIN23 = NO
+OUTPUT_TOUR_FILE =/home/star/chen/FlyCo/open_source/planner_simulator/src/hierarchical_coverage_planner/solution/local/solver_tools.txt
+RUNS = 1

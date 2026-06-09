@@ -1,0 +1,4 @@
+path:
+  - waypoints:
+    # windmill
+    - [-5.0, 0.0, 15.0, 0.0, 0.0]

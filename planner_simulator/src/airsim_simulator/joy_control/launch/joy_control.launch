@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<launch>
+  <arg name="max_vel" value="1.5"/>
+  <arg name="max_acc" value="2.0"/>
+  <arg name="max_yd" value="20.0"/>
+  <arg name="pitch_upper" value="25.0"/>
+  <arg name="pitch_lower" value="-80.0"/>
+  <arg name="fov_h" value="55.0"/>
+  <arg name="fov_w" value="75.0"/>
+  <arg name="max_dist" value="11.0"/>
+
+  <node name="joy_node" pkg="joy" type="joy_node">
+    <param name="~dev" value="/dev/input/js0"/>
+    <param name="use_ff" value="false"/>
+  </node>
+
+  <node pkg="ue4_control" name="joy_cmd" type="joy_cmd" output="screen">
+  
+  <remap from="/joy_ctrl/pos_cmd" to="planning/pos_cmd"/>
+  <remap from="/joy_ctrl/gimbal_cmd" to="/gimbal_angle_euler_cmd"/>
+
+  <param name="/time" value="0.01" type="double"/>
+  <param name="/transition" value="0.3" type="double"/>
+  <param name="/kp_x" value="1.0" type="double"/>
+  <param name="/kp_y" value="1.0" type="double"/>
+  <param name="/kp_z" value="1.0" type="double"/>
+  <param name="/kp_yaw" value="1.0" type="double"/>
+  <param name="/kp_pitch" value="0.1" type="double"/>
+  <param name="/max_vel" value="$(arg max_vel)" type="double"/>
+  <param name="/max_acc" value="$(arg max_acc)" type="double"/>
+  <param name="/max_yd" value="$(eval arg('max_yd')*3.1415926/180.0)" type="double"/>
+  <param name="/pitch_upper" value="$(arg pitch_upper)" type="double"/>
+  <param name="/pitch_lower" value="$(arg pitch_lower)" type="double"/>
+  <param name="/init_z" value="1.5" type="double"/>
+
+  <param name="/top_angle" value="$(eval arg('fov_h')*3.1415926/360.0)" type="double"/>
+  <param name="/left_angle" value="$(eval arg('fov_w')*3.1415926/360.0)" type="double"/>
+  <param name="/right_angle" value="$(eval arg('fov_w')*3.1415926/360.0)" type="double"/>
+  <param name="/max_dist" value="$(arg max_dist)" type="double"/>
+  <param name="/vis_dist" value="1.0" type="double"/>
+
+  </node>
+</launch>

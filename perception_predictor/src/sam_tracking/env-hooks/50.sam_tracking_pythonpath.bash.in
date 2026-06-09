@@ -1,0 +1,9 @@
+_sam_tracking_thirdparty="@CMAKE_CURRENT_SOURCE_DIR@/thirdparty"
+if [ -d "$_sam_tracking_thirdparty/sam_tk" ]; then
+  export PYTHONPATH="$_sam_tracking_thirdparty/sam_tk:$PYTHONPATH"
+fi
+unset _sam_tracking_thirdparty
+
+if [ -d "$CATKIN_ENV_HOOK_WORKSPACE/lib/python3.8/site-packages" ]; then
+  export PYTHONPATH="$CATKIN_ENV_HOOK_WORKSPACE/lib/python3.8/site-packages:$PYTHONPATH"
+fi

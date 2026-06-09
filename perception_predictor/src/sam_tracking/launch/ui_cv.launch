@@ -1,0 +1,13 @@
+<launch>
+  <arg name="image_topic" default="/tracking/input/image" />
+  <arg name="query_points_topic" default="/query_points" />
+  <arg name="query_text_topic" default="/query_text" />
+  <arg name="initial_text_prompt" default="" />
+
+  <node pkg="sam_tracking" name="prompt_ui" type="prompt_ui_cv_node.py" output="screen">
+    <param name="initial_text_prompt" value="$(arg initial_text_prompt)" type="string" />
+    <remap from="/img_topic" to="$(arg image_topic)" />
+    <remap from="/query_points" to="$(arg query_points_topic)" />
+    <remap from="/query_text" to="$(arg query_text_topic)" />
+  </node>
+</launch>

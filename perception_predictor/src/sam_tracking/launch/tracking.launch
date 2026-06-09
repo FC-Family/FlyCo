@@ -1,0 +1,28 @@
+<launch>
+  <arg name="config_file" default="$(find sam_tracking)/config/tracking.yaml" />
+  <arg name="query_points_topic" default="" />
+  <arg name="query_text_topic" default="" />
+  <arg name="image_topic" default="" />
+  <arg name="pointcloud_topic" default="" />
+  <arg name="odometry_topic" default="" />
+  <arg name="cluster_target_pc_topic" default="" />
+  <arg name="mask_pointcloud_topic" default="" />
+  <arg name="cluster_pointcloud_topic" default="" />
+  <arg name="reinit_debug_dir" default="" />
+  <arg name="min_height" default="" />
+  <node pkg="sam_tracking" name="sam_tracking" type="tracking_node.py" output="screen">
+    <param name="ckpt_path" value="$(find sam_tracking)/ckpt" type="string" />
+    <rosparam file="$(arg config_file)" command="load" subst_value="true" />
+    <param if="$(eval arg('min_height') != '')" name="min_height" value="$(arg min_height)" />
+    <param if="$(eval arg('query_points_topic') != '')" name="query_points_topic" value="$(arg query_points_topic)" />
+    <param if="$(eval arg('query_text_topic') != '')" name="query_text_topic" value="$(arg query_text_topic)" />
+    <param if="$(eval arg('image_topic') != '')" name="img_topic" value="$(arg image_topic)" />
+    <param if="$(eval arg('pointcloud_topic') != '')" name="pc_topic" value="$(arg pointcloud_topic)" />
+    <param if="$(eval arg('odometry_topic') != '')" name="odom_topic" value="$(arg odometry_topic)" />
+    <param if="$(eval arg('cluster_target_pc_topic') != '')" name="cluster_target_pc_topic" value="$(arg cluster_target_pc_topic)" />
+    <param if="$(eval arg('mask_pointcloud_topic') != '')" name="mask_pointcloud_topic" value="$(arg mask_pointcloud_topic)" />
+    <param if="$(eval arg('cluster_pointcloud_topic') != '')" name="cluster_pointcloud_topic" value="$(arg cluster_pointcloud_topic)" />
+    <param if="$(eval arg('reinit_debug_dir') != '')" name="reinit_debug_dir" value="$(arg reinit_debug_dir)" />
+  </node>
+
+</launch>

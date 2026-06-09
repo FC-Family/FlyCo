@@ -1,0 +1,11 @@
+NAME : Next_sub.1560.tour
+COMMENT : Length = 1560
+COMMENT : Found by LKH [Keld Helsgaun] Sat Jun  6 02:31:27 2026
+TYPE : TOUR
+DIMENSION : 3
+TOUR_SECTION
+1
+2
+3
+-1
+EOF

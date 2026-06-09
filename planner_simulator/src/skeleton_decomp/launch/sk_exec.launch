@@ -1,0 +1,16 @@
+<launch>
+
+  <arg name="mesh" default="$(find mesh_publisher)/model/windmill/mesh_fix.obj" />
+  <!-- <arg name="mesh" default="$(find skeleton_decomp)/data/pipe.obj" /> -->
+  <arg name="node_ns" default="sk_exec" />
+
+  <!-- Reuse the same skeleton-space-decomposition parameters as flyco_planner. -->
+  <include file="$(find flyco_planner_manager)/launch/modules/skeleton_space_decomposition.xml">
+    <arg name="node_ns" value="$(arg node_ns)"/>
+  </include>
+
+  <node pkg="skeleton_decomp" name="$(arg node_ns)" type="sk_exec" output="screen" required="true">
+    <param name="sk/input_mesh" value="$(arg mesh)" type="string"/>
+  </node>
+
+</launch>

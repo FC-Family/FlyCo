@@ -1,0 +1,46 @@
+<launch>
+  <arg name="node_ns" default="flyco_planner"/>
+
+  <arg name="viewpoint_visible_range" default="10.0"/>
+  <arg name="viewpoint_distance" default="8.0"/>
+  <arg name="viewpoint_fov_h" default="55.0"/>
+  <arg name="viewpoint_fov_w" default="70.0"/>
+  <arg name="viewpoint_pitch_upper" default="35.0"/>
+  <arg name="viewpoint_pitch_lower" default="-90.0"/>
+  <arg name="viewpoint_z_ground" default="true"/>
+  <arg name="viewpoint_ground_pos" default="0.0"/>
+  <arg name="viewpoint_top_pos" default="50.0"/>
+  <arg name="viewpoint_safe_height" default="1.2"/>
+  <arg name="viewpoint_safe_radius" default="2.5"/>
+  <arg name="viewpoint_attitude_type" default="all"/>
+  <arg name="viewpoint_max_iter_num" default="3"/>
+  <arg name="viewpoint_pose_update" default="true"/>
+  <arg name="viewpoint_resolution" default="0.15"/>
+  <arg name="viewpoint_shrink_factor" default="0.6"/>
+  <arg name="viewpoint_vis_inf" default="0.4"/>
+  <arg name="viewpoint_init_size" default="500"/>
+  <arg name="viewpoint_save_lower" default="4"/>
+
+  <group ns="$(arg node_ns)">
+    <!-- ! Viewpoint Generation ! -->
+    <param name="viewpoint_manager/visible_range"       value="$(arg viewpoint_visible_range)" type="double"/>
+    <param name="viewpoint_manager/viewpoints_distance" value="$(arg viewpoint_distance)" type="double"/>
+    <param name="viewpoint_manager/fov_h"               value="$(arg viewpoint_fov_h)" type="double"/>
+    <param name="viewpoint_manager/fov_w"               value="$(arg viewpoint_fov_w)" type="double"/>
+    <param name="viewpoint_manager/pitch_upper"         value="$(arg viewpoint_pitch_upper)" type="double"/>
+    <param name="viewpoint_manager/pitch_lower"         value="$(arg viewpoint_pitch_lower)" type="double"/>
+    <param name="viewpoint_manager/zGround"             value="$(arg viewpoint_z_ground)" type="bool"/>
+    <param name="viewpoint_manager/GroundPos"           value="$(arg viewpoint_ground_pos)" type="double"/>
+    <param name="viewpoint_manager/TopPos"              value="$(arg viewpoint_top_pos)" type="double"/>
+    <param name="viewpoint_manager/safeHeight"          value="$(arg viewpoint_safe_height)" type="double"/>
+    <param name="viewpoint_manager/safe_radius"         value="$(arg viewpoint_safe_radius)" type="double"/>
+    <param name="viewpoint_manager/attitude_type"       value="$(arg viewpoint_attitude_type)" type="string"/> <!-- attitude_type : 1) yaw 2) all -> (pitch, yaw) -->
+    <param name="viewpoint_manager/max_iter_num"        value="$(arg viewpoint_max_iter_num)" type="int"/>
+    <param name="viewpoint_manager/pose_update"         value="$(arg viewpoint_pose_update)" type="bool"/>
+    <param name="viewpoint_manager/resolution"          value="$(arg viewpoint_resolution)" type="double"/>
+    <param name="viewpoint_manager/shrink_factor"       value="$(arg viewpoint_shrink_factor)" type="double"/>
+    <param name="viewpoint_manager/vis_inf"             value="$(arg viewpoint_vis_inf)" type="double"/>
+    <param name="viewpoint_manager/init_size"           value="$(arg viewpoint_init_size)" type="int"/>
+    <param name="viewpoint_manager/save_lower"          value="$(arg viewpoint_save_lower)" type="int"/>
+  </group>
+</launch>

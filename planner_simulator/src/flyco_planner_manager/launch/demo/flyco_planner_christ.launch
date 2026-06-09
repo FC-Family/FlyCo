@@ -1,0 +1,49 @@
+<launch>  
+  <!-- ! Parameters -->
+  <arg name="scenario"           value="christ"/>
+  <arg name="map_size_x"         value="60.0"/>
+  <arg name="map_size_y"         value="60.0"/>
+  <arg name="map_size_z"         value="40.0"/>
+  <arg name="map_back_x"         value="-10.0"/>
+  <arg name="map_back_y"         value="-30.0"/>
+  <arg name="virtual_ceil"       value="49.0"/>
+  <arg name="ground_height"      value="-3.0"/>
+  <arg name="ground_pos"         value="-1.0"/>
+  <arg name="top_height"         value="50.0"/>
+  <arg name="max_visible_dist"   value="35.0"/>
+  <arg name="mapping_vis_z_max"  value="48.5"/>
+  <arg name="mapping_vis_z_min"  value="-1.0"/>
+  <arg name="local_length"       value="8.0" />
+  <arg name="global_overlap"     value="8.0" />
+  <arg name="coverage_objective" value="99.0" />
+  <arg name="max_cvx_range"      value="8.0"/>
+  <arg name="global_solving"     value="70.0"/>
+  <arg name="vis_inf"            value="0.45"/>
+  <arg name="tsp_horizon"        value="30.0"/>
+  
+  <include file="$(find flyco_planner_manager)/launch/demo/param.xml">
+    <!-- ! Params for Each Module -->
+    <arg name="scenario"           value="$(arg scenario)"/>
+    <arg name="map_size_x"         value="$(arg map_size_x)"/>
+    <arg name="map_size_y"         value="$(arg map_size_y)"/>
+    <arg name="map_size_z"         value="$(arg map_size_z)"/>
+    <arg name="map_back_x"         value="$(arg map_back_x)"/>
+    <arg name="map_back_y"         value="$(arg map_back_y)"/>
+    <arg name="virtual_ceil"       value="$(arg virtual_ceil)"/>
+    <arg name="ground_height"      value="$(arg ground_height)"/>
+    <arg name="ground_pos"         value="$(arg ground_pos)"/>
+    <arg name="top_height"         value="$(arg top_height)"/>
+    <arg name="max_visible_dist"   value="$(arg max_visible_dist)"/>
+    <arg name="mapping_vis_z_max"  value="$(arg mapping_vis_z_max)"/>
+    <arg name="mapping_vis_z_min"  value="$(arg mapping_vis_z_min)"/>
+    <arg name="local_length"       value="$(arg local_length)"/>
+    <arg name="global_overlap"     value="$(arg global_overlap)"/>
+    <arg name="coverage_objective" value="$(arg coverage_objective)"/>
+    <arg name="max_cvx_range"      value="$(arg max_cvx_range)"/>
+    <arg name="global_solving"     value="$(arg global_solving)"/>
+    <arg name="vis_inf"            value="$(arg vis_inf)"/>
+    <arg name="tsp_horizon"        value="$(arg tsp_horizon)"/>
+
+  </include>
+
+</launch>

@@ -1,0 +1,133 @@
+<launch>
+  <arg name="map_size_x" value="180.0"/>
+  <arg name="map_size_y" value="160.0"/>
+  <arg name="map_size_z" value="40.0"/>
+  <arg name="cx" value="320.0"/>
+  <arg name="cy" value="240.0"/>
+  <arg name="fx" value="554.2562866210938"/>
+  <arg name="fy" value="554.2562866210938"/>
+  <arg name="resolution_" value="0.3"/>
+  <arg name="mapping_dist" value="11.5"/>
+  <arg name="visible_dist" value="40.0"/>
+  <arg name="airsim" value="true" />
+  
+  <node pkg="plan_env" name="mapping" type="mapping" output="screen">
+  
+    <!-- ! Subscribed Topic -->
+    <!-- <remap from ="/map_ros/pose" to="/airsim_node/drone_1/odom_local_enu"/>
+    <remap from ="/map_ros/cloud" to="/airsim_node/drone_1/world_lidar_cloud"/> -->
+
+    <remap from ="/map_ros/pose" to="/ekf_quat/ekf_odom"/>
+    <remap from ="/map_ros/cloud" to="/cloud_registered"/>
+
+    <remap from ="/map_ros/depth" to="/airsim_node/drone_1/front_center/DepthPerspective"/>
+    <remap from ="/map_ros/tracking_all_cloud" to="/tracking/all_pc"/>
+    <remap from ="/map_ros/tracking_target_cloud" to="/tracking/target_pc"/>
+    <remap from ="/map_ros/tracking_env_cloud" to="/tracking/env_pc"/>
+    <remap from ="/map_ros/tracking_pose" to="/tracking/pose"/>
+    <remap from ="/prediction/predicted_mesh" to="/prediction/predicted_mesh"/>
+
+    <!-- ! Published Topic -->
+    <remap from ="/map_ros/partial_observation" to="/dual_mapping/partial"/>
+
+    <param name="hcmap/resolution" value="$(arg resolution_)" type="double"/>
+    <param name="hcmap/interval" value="1.0" type="double"/>
+    <param name="hcmap/plane_thickness" value="3.0" type="double"/>
+    <param name="hcmap/dilateRadius" value="0.5" type="double"/>
+    <param name="hcmap/checkScale" value="5.0" type="double"/>
+    <param name="hcmap/checkSize" value="7" type="int"/>
+    <param name="hcmap/inflateVoxel" value="8" type="int"/>
+
+    <param name="sdf_map/resolution"      value="$(arg resolution_)" /> 
+    <param name="sdf_map/map_size_x"   value="$(arg map_size_x)" />   
+    <param name="sdf_map/map_size_y"   value="$(arg map_size_y)" /> 
+    <param name="sdf_map/map_size_z"   value="$(arg map_size_z)" /> 
+    <param name="sdf_map/map_back_x"          value="-40.0" /> 
+    <param name="sdf_map/obstacles_inflation"     value="1.2" /> 
+    <param name="sdf_map/target_obs_inf"      value="2.4" />
+    <param name="sdf_map/obstacles_inf_z"     value="0.6" /> 
+    <param name="sdf_map/target_obs_inf_z"    value="1.2" /> 
+    <param name="sdf_map/local_bound_inflate"    value="0.5"/>
+    <param name="sdf_map/local_map_margin" value="50"/>
+    <param name="sdf_map/ground_height"        value="-1.0"/>
+    <param name="sdf_map/default_dist"        value="0.0"/>
+    <param name="sdf_map/virtual_ceil_height"        value="39.5"/>
+    <param name="sdf_map/optimistic" value="false" type="bool"/>
+    <param name="sdf_map/signed_dist" value="false" type="bool"/>
+    
+    <param name="sdf_map/p_hit"  value="0.96"/>
+    <param name="sdf_map/p_miss" value="0.495"/>
+    <param name="sdf_map/p_min"  value="0.12"/>
+    <param name="sdf_map/p_max"  value="0.93"/>
+    <param name="sdf_map/p_occ"  value="0.30"/>
+    <param name="sdf_map/min_ray_length" value="1.0"/>
+    <param name="sdf_map/max_ray_length" value="$(arg visible_dist)"/>
+    <param name="sdf_map/airsim_flag" value="$(arg airsim)"/>
+    <param name="sdf_map/enable_inherit" value="false"/>
+
+    <param name="map_ros/mapping_fps" value="5.0" type="double"/>
+    <param name="map_ros/partial_time" value="0.2" type="double"/>
+    <param name="map_ros/cx" value="$(arg cx)"/>
+    <param name="map_ros/cy" value="$(arg cy)"/>
+    <param name="map_ros/fx" value="$(arg fx)"/>
+    <param name="map_ros/fy" value="$(arg fy)"/>
+    <param name="map_ros/depth_filter_maxdist"   value="$(arg mapping_dist)"/>
+    <param name="map_ros/depth_filter_mindist"   value="0.25"/>
+    <param name="map_ros/depth_filter_margin"    value="2"/>
+    <param name="map_ros/k_depth_scaling_factor" value="1000.0"/>
+    <param name="map_ros/skip_pixel" value="2"/>
+    <param name="map_ros/esdf_slice_height" value="3.0"/>
+    <param name="map_ros/visualization_truncate_height"   value="39.0"/>
+    <param name="map_ros/visualization_truncate_low"   value="0.5"/>
+    <param name="map_ros/show_occ_time"  value="false"/>
+    <param name="map_ros/show_esdf_time" value="false"/>
+    <param name="map_ros/show_all_map" value="true"/>
+    <param name="map_ros/show_local_map" value="true"/>
+    <param name="map_ros/show_depth" value="true"/>
+    <param name="map_ros/show_local_range" value="true"/>
+    <param name="map_ros/show_target" value="true"/>
+    <param name="map_ros/show_env" value="true"/>
+    <param name="map_ros/show_inflate" value="true"/>
+    <param name="map_ros/frame_id"      value="world"/>
+    <param name="map_ros/airsim_flag" value="$(arg airsim)"/>
+    <param name="map_ros/h_fov"   value="360.0"/>
+    <param name="map_ros/v_fov_min"   value="-7.0"/>
+    <param name="map_ros/v_fov_max"   value="52.0"/>
+    <param name="map_ros/inf_fov"   value="4.0"/>
+    <param name="map_ros/h_res"   value="1.3"/>
+    <param name="map_ros/v_res"   value="1.3"/>
+    <param name="map_ros/dil_pixels"   value="3"/>
+
+    <!-- ! Type of Inputs -->
+    <!-- 
+    * dp:   depth camera + pose
+    * dgp:  depth camera + gimbal + pose
+    * cp:   LiDAR + pose
+    * ctep: LiDAR + target + env + pose (Tracking mode) 
+    -->
+    <param name="map_ros/dp" value="false" type="bool"/>
+    <param name="map_ros/dgp" value="false" type="bool"/>
+    <param name="map_ros/cp" value="false" type="bool"/>
+    <param name="map_ros/ctep" value="true" type="bool"/>
+
+    <!-- ! Depth Extrinsic Parameters -->
+    <!-- ! AirSim Sensor -> should transform param from NED to ENU -->
+    <!-- ! Extrinsic Definition: x -> positive for forward, negative for backward
+         !                       y -> positive for right, negative for left
+         !                       z -> positive for down, negative for up -->
+    <!-- * That means you adjust the sensor in NED frame on the body. -->
+    <!-- ? For LiDAR sensor in AirSim, the extrinsic parameters are: -->
+    <!-- * If you set offset (x, y, z) in setting.json of AirSim, you should set the value as (y, x, -z) here. -->
+    <!-- * If you set rotation (roll, pitch, yaw) in setting.json of AirSim, you should set the value as (pitch, roll, -yaw) here. 
+         * Note: AirSim uses degree, you should convert it to rad. -->
+    <!-- ? For Camera/Depth sensor in AirSim, the extrinsic parameters are: -->
+    <!-- * If you set offset (x, y, z) in setting.json of AirSim, you should set the value as (x, -y, -z) here. -->
+    <param name="map_ros/extrinsic_x" value="0.0" type="double"/>
+    <param name="map_ros/extrinsic_y" value="0.0" type="double"/>
+    <param name="map_ros/extrinsic_z" value="-0.0" type="double"/>
+    <param name="map_ros/extrinsic_roll" value="$(eval 0.293139*3.1415926/180.0)" type="double"/>
+    <param name="map_ros/extrinsic_pitch" value="$(eval 10.6698*3.1415926/180.0)" type="double"/>
+    <param name="map_ros/extrinsic_yaw" value="$(eval -0.0*3.1415926/180.0)" type="double"/>
+
+  </node>
+</launch>

@@ -1,0 +1,13 @@
+<launch>
+  <arg name="node_ns" default="flyco_planner"/>
+  <arg name="astar_lambda_heu_hc" default="10.0"/>
+  <arg name="astar_resolution_astar" default="0.15"/>
+  <arg name="astar_max_search_time" default="0.01"/>
+
+  <group ns="$(arg node_ns)">
+    <!-- ! Path Searching ! -->
+    <param name="astar/lambda_heu_hc"                 value="$(arg astar_lambda_heu_hc)" type="double"/>
+    <param name="astar/resolution_astar"              value="$(arg astar_resolution_astar)" type="double"/>
+    <param name="astar/max_search_time"               value="$(arg astar_max_search_time)" type="double"/>
+  </group>
+</launch>

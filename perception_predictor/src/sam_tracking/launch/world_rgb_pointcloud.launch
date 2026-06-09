@@ -1,0 +1,33 @@
+<launch>
+  <arg name="image_topic" default="/airsim_node/drone_1/front_center/Scene" />
+  <arg name="depth_topic" default="/airsim_node/drone_1/front_center/DepthPerspective" />
+  <arg name="odom_topic" default="/airsim_node/drone_1/odom_local_enu" />
+  <arg name="gimbal_topic" default="/gimbal_pose" />
+  <arg name="camera_info_topic" default="/airsim_node/drone_1/front_center/Scene/camera_info" />
+  <arg name="tf_static_topic" default="/tf_static" />
+  <arg name="output_topic" default="/tracking/debug/world_img_rgb_pcd" />
+  <arg name="sync_slop" default="0.08" />
+  <arg name="max_depth" default="30.0" />
+  <arg name="min_depth" default="0.5" />
+  <arg name="skip_pixels" default="1" />
+  <arg name="airsim_gimbal_use_roll" default="false" />
+  <arg name="airsim_odom_frame" default="drone_1/odom_local_enu" />
+  <arg name="airsim_camera_body_frame" default="front_center_body/static" />
+
+  <node pkg="sam_tracking" name="world_rgb_pointcloud" type="world_rgb_pointcloud_node.py" output="screen">
+    <param name="image_topic" value="$(arg image_topic)" />
+    <param name="depth_topic" value="$(arg depth_topic)" />
+    <param name="odom_topic" value="$(arg odom_topic)" />
+    <param name="gimbal_topic" value="$(arg gimbal_topic)" />
+    <param name="camera_info_topic" value="$(arg camera_info_topic)" />
+    <param name="tf_static_topic" value="$(arg tf_static_topic)" />
+    <param name="output_topic" value="$(arg output_topic)" />
+    <param name="sync_slop" value="$(arg sync_slop)" />
+    <param name="max_depth" value="$(arg max_depth)" />
+    <param name="min_depth" value="$(arg min_depth)" />
+    <param name="skip_pixels" value="$(arg skip_pixels)" />
+    <param name="airsim_gimbal_use_roll" value="$(arg airsim_gimbal_use_roll)" />
+    <param name="airsim_odom_frame" value="$(arg airsim_odom_frame)" />
+    <param name="airsim_camera_body_frame" value="$(arg airsim_camera_body_frame)" />
+  </node>
+</launch>

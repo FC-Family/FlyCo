@@ -1,0 +1,17 @@
+camera_param: "config/cameras/sim.json"
+camera_info_topic: ""
+pc_topic: "/tracking/target_pc"
+img_pose_topic: "/sam_tracking/compress_mask_and_transform"
+text_prompt_topic: "/text_prompt"
+predicted_pointcloud_topic: "mesh_pred/pred_pc"
+partial_pointcloud_topic: "mesh_pred/partial_pc"
+predicted_mesh_topic: "/prediction/predicted_mesh"
+mesh_vis_topic: "/prediction/mesh_vis"
+predicted_input_imgs_topic: "/prediction/input_image"
+min_height: 0.1
+mesh_min_z_offset: 0.3
+keep_largest_mesh_component: true
+nksr_scale: 0.3
+recall_threshold: 0.99
+recall_distance_threshold: 0.1
+pose_alignment_mode: "legacy_ros"

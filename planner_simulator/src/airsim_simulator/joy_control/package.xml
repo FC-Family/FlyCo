@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>ue4_control</name>
+  <version>0.0.0</version>
+  <description>The ue4_control package</description>
+
+  <maintainer email="chenfeng@todo.todo">chen feng</maintainer>
+
+  <license>TODO</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>roscpp</depend>
+  <depend>quadrotor_msgs</depend>
+  <depend>active_perception</depend>
+  <depend>nodelet</depend>
+  <depend>pluginlib</depend>
+  <depend>geometry_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>mavros_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>tf2</depend>
+  <depend>tf</depend>
+  <depend>rosgraph_msgs</depend>
+  <depend>message_filters</depend>
+  <depend>airsim_ros_pkgs</depend>
+
+
+</package>

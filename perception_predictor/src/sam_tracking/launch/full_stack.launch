@@ -1,0 +1,73 @@
+<launch>
+  <arg name="tracking_config_file" default="$(find sam_tracking)/config/tracking.yaml" />
+  <arg name="cluster_config_file" default="$(find sam_tracking)/config/cluster.yaml" />
+  <arg name="input_query_points_topic" default="/query_points" />
+  <arg name="input_query_text_topic" default="/query_text" />
+  <arg name="query_points_topic" default="/tracking/prompt/points" />
+  <arg name="query_text_topic" default="/tracking/prompt/text" />
+  <arg name="input_image_topic" default="/airsim_node/drone_1/front_center/Scene" />
+  <arg name="input_pointcloud_topic" default="/airsim_node/drone_1/world_lidar_cloud" />
+  <arg name="input_odometry_topic" default="/airsim_node/drone_1/odom_local_enu" />
+  <arg name="guide_pointcloud_topic" default="/tracking/guider_pc" />
+  <arg name="cluster_target_pointcloud_topic" default="/tracking/target_pc" />
+  <arg name="cluster_environment_pointcloud_topic" default="/tracking/env_pc" />
+  <arg name="reinit_debug_dir" default="" />
+  <arg name="min_height" default="0.1" />
+  <arg name="cluster_tolerance" default="" />
+  <arg name="cluster_algorithm" default="incremental_euclidean" />
+  <arg name="target_refine_mode" default="guide_radius" />
+  <arg name="cluster_min_x" default="" />
+  <arg name="cluster_max_x" default="" />
+  <arg name="cluster_min_y" default="" />
+  <arg name="cluster_max_y" default="" />
+  <arg name="cluster_min_z" default="" />
+  <arg name="cluster_max_z" default="" />
+  <arg name="launch_prompt_ui" default="true" />
+  <arg name="prompt_ui_launch" default="$(find sam_tracking)/launch/ui_cv.launch" />
+  <arg name="prompt_ui_image_topic" default="$(arg input_image_topic)" />
+  <arg name="initial_text_prompt" default="" />
+
+  <include file="$(find sam_tracking)/launch/tracking.launch">
+    <arg name="config_file" value="$(arg tracking_config_file)" />
+    <arg name="image_topic" value="$(arg input_image_topic)" />
+    <arg name="pointcloud_topic" value="$(arg input_pointcloud_topic)" />
+    <arg name="odometry_topic" value="$(arg input_odometry_topic)" />
+    <arg name="query_points_topic" value="$(arg query_points_topic)" />
+    <arg name="query_text_topic" value="$(arg query_text_topic)" />
+    <arg name="reinit_debug_dir" value="$(arg reinit_debug_dir)" />
+    <arg name="min_height" value="$(arg min_height)" />
+  </include>
+
+  <include file="$(find sam_tracking)/launch/prompt.launch">
+    <arg name="input_query_points_topic" value="$(arg input_query_points_topic)" />
+    <arg name="input_query_text_topic" value="$(arg input_query_text_topic)" />
+    <arg name="query_points_topic" value="$(arg query_points_topic)" />
+    <arg name="query_text_topic" value="$(arg query_text_topic)" />
+  </include>
+
+  <include file="$(find sam_tracking)/launch/cluster.launch">
+    <arg name="config_file" value="$(arg cluster_config_file)" />
+    <arg name="input_pointcloud_topic" value="$(arg input_pointcloud_topic)" />
+    <arg name="input_odometry_topic" value="$(arg input_odometry_topic)" />
+    <arg name="guide_pointcloud_topic" value="$(arg guide_pointcloud_topic)" />
+    <arg name="cluster_target_pointcloud_topic" value="$(arg cluster_target_pointcloud_topic)" />
+    <arg name="cluster_environment_pointcloud_topic" value="$(arg cluster_environment_pointcloud_topic)" />
+    <arg name="min_height" value="$(arg min_height)" />
+    <arg name="cluster_tolerance" value="$(arg cluster_tolerance)" />
+    <arg name="cluster_algorithm" value="$(arg cluster_algorithm)" />
+    <arg name="target_refine_mode" value="$(arg target_refine_mode)" />
+    <arg name="cluster_min_x" value="$(arg cluster_min_x)" />
+    <arg name="cluster_max_x" value="$(arg cluster_max_x)" />
+    <arg name="cluster_min_y" value="$(arg cluster_min_y)" />
+    <arg name="cluster_max_y" value="$(arg cluster_max_y)" />
+    <arg name="cluster_min_z" value="$(arg cluster_min_z)" />
+    <arg name="cluster_max_z" value="$(arg cluster_max_z)" />
+  </include>
+
+  <include if="$(arg launch_prompt_ui)" file="$(arg prompt_ui_launch)">
+    <arg name="image_topic" value="$(arg prompt_ui_image_topic)" />
+    <arg name="query_points_topic" value="$(arg input_query_points_topic)" />
+    <arg name="query_text_topic" value="$(arg input_query_text_topic)" />
+    <arg name="initial_text_prompt" value="$(arg initial_text_prompt)" />
+  </include>
+</launch>

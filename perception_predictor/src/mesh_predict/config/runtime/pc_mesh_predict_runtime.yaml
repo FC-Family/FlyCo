@@ -1,0 +1,17 @@
+runtime:
+  model_config_path: "config/runtime/pc_mesh_predict_model.yaml"
+  camera_param_default: "config/cameras/sim.json"
+
+resources:
+  mesh_pred_checkpoint:
+    default: "resources/checkpoints/checkpoint.pth"
+    env: "MESH_PREDICT_MESH_CKPT"
+  nksr_checkpoint:
+    default: "resources/checkpoints/snet-n3k-wonormal.pth"
+    env: "MESH_PREDICT_NKSR_CKPT"
+  dino_model:
+    default: "facebook/dinov2-base"
+    env: "MESH_PREDICT_DINO_MODEL"
+  siglip_model:
+    default: "google/siglip-base-patch16-224"
+    env: "MESH_PREDICT_SIGLIP_MODEL"

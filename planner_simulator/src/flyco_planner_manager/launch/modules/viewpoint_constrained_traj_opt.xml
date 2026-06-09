@@ -1,0 +1,36 @@
+<launch>
+  <arg name="node_ns" default="flyco_planner"/>
+
+  <arg name="hctraj_drone_radius" default="0.3"/>
+  <arg name="hctraj_vmax" default="1.0"/>
+  <arg name="hctraj_amax" default="3.0"/>
+  <arg name="hctraj_jmax" default="5.0"/>
+  <arg name="hctraj_ydmax" default="0.34906584444444444"/>
+  <arg name="hctraj_safe_inf" default="0.4"/>
+  <arg name="hctraj_rho_t" default="60.0"/>
+  <arg name="hctraj_rho_rt" default="80.0"/>
+  <arg name="hctraj_rho_j" default="0.0"/>
+  <arg name="hctraj_rho_a" default="50.0"/>
+  <arg name="hctraj_rho_v" default="1000.0"/>
+  <arg name="hctraj_rho_p" default="500.0"/>
+  <arg name="hctraj_rho_rp" default="60.0"/>
+  <arg name="hctraj_rho_e" default="1.0"/>
+
+  <group ns="$(arg node_ns)">
+    <!-- ! Viewpoint-constrained Trajectory Optimization ! -->
+    <param name="hctraj/drone_radius" value="$(arg hctraj_drone_radius)" type="double"/>
+    <param name="hctraj/vmax_"        value="$(arg hctraj_vmax)" type="double"/>
+    <param name="hctraj/amax_"        value="$(arg hctraj_amax)" type="double"/>
+    <param name="hctraj/jmax_"        value="$(arg hctraj_jmax)" type="double"/>
+    <param name="hctraj/ydmax_"       value="$(arg hctraj_ydmax)" type="double"/>
+    <param name="hctraj/safe_inf"     value="$(arg hctraj_safe_inf)" type="double"/>
+    <param name="hctraj/rho_T"        value="$(arg hctraj_rho_t)" type="double"/>
+    <param name="hctraj/rho_RT"       value="$(arg hctraj_rho_rt)" type="double"/>
+    <param name="hctraj/rho_j"        value="$(arg hctraj_rho_j)" type="double"/>
+    <param name="hctraj/rho_a"        value="$(arg hctraj_rho_a)" type="double"/>
+    <param name="hctraj/rho_v"        value="$(arg hctraj_rho_v)" type="double"/>
+    <param name="hctraj/rho_p"        value="$(arg hctraj_rho_p)" type="double"/>
+    <param name="hctraj/rho_Rp"       value="$(arg hctraj_rho_rp)" type="double"/>
+    <param name="hctraj/rho_e"        value="$(arg hctraj_rho_e)" type="double"/>
+  </group>
+</launch>

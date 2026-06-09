@@ -1,0 +1,67 @@
+<launch>
+  <arg name="node_ns" default="flyco_planner"/>
+
+  <arg name="sk_cal_number" default="5000"/>
+  <arg name="sk_est_number" default="10"/>
+  <arg name="sk_ds_number" default="1500"/>
+  <arg name="sk_selected_num" default="100"/>
+  <arg name="sk_k_knn" default="6"/>
+  <arg name="sk_iteration_extraction" default="5"/>
+  <arg name="sk_orientation_convergence_thresh" default="1e-3"/>
+  <arg name="sk_iteration_shrinking" default="5"/>
+  <arg name="sk_relaxed_candidate_dist" default="10.0"/>
+  <arg name="sk_hybrid_decomp_max_points" default="100"/>
+  <arg name="sk_hybrid_component_radius_scale" default="0.0"/>
+  <arg name="sk_hybrid_projection_weight" default="1.0"/>
+  <arg name="sk_hybrid_min_component_size" default="4"/>
+  <arg name="sk_hybrid_dcrosa_iter" default="1"/>
+  <arg name="sk_hybrid_dcrosa_confidence_th" default="0.5"/>
+  <arg name="sk_hybrid_dcrosa_neighbor_blend" default="1.0"/>
+  <arg name="sk_hybrid_smooth_iter" default="0"/>
+  <arg name="sk_dcrosa_topology_sample_radius" default="0.0"/>
+  <arg name="sk_dcrosa_topology_min_support" default="2"/>
+  <arg name="sk_dcrosa_guided_min_branch_len_scale" default="1.0"/>
+  <arg name="sk_dcrosa_guided_confidence_ratio" default="0.75"/>
+  <arg name="sk_dcrosa_guided_min_group_size" default="3"/>
+
+  <arg name="fps_gpu" default="$(find skeleton_decomp)/fps/sampling_gpu/build"/>
+  <arg name="fps_cpu" default="$(find skeleton_decomp)/fps/sampling_cpu/build"/>
+  <arg name="fps_input" default="$(find skeleton_decomp)/fps/input.txt"/>
+  <arg name="fps_output" default="$(find skeleton_decomp)/fps/output.txt"/>
+
+  <arg name="input_resolution" default="0.15"/>
+  <arg name="input_independent" default="false"/>
+
+  <group ns="$(arg node_ns)">
+    <!-- ! Skeleton-based Space Decomposition ! -->
+    <param name="sk/cal_number"           value="$(arg sk_cal_number)" type="int"/>
+    <param name="sk/est_number"           value="$(arg sk_est_number)" type="int"/>
+    <param name="sk/ds_number"            value="$(arg sk_ds_number)" type="int"/>
+    <param name="sk/selected_num"         value="$(arg sk_selected_num)" type="int"/>
+    <param name="sk/k_KNN"                value="$(arg sk_k_knn)" type="int"/>
+    <param name="sk/iteration_extraction" value="$(arg sk_iteration_extraction)" type="int"/>
+    <param name="sk/iteration_shrinking"  value="$(arg sk_iteration_shrinking)" type="int"/>
+    <param name="sk/relaxed_candidate_dist" value="$(arg sk_relaxed_candidate_dist)" type="double"/>
+    <param name="sk/hybrid_decomp_max_points" value="$(arg sk_hybrid_decomp_max_points)" type="int"/>
+    <param name="sk/hybrid_component_radius_scale" value="$(arg sk_hybrid_component_radius_scale)" type="double"/>
+    <param name="sk/hybrid_projection_weight" value="$(arg sk_hybrid_projection_weight)" type="double"/>
+    <param name="sk/hybrid_min_component_size" value="$(arg sk_hybrid_min_component_size)" type="int"/>
+    <param name="sk/hybrid_dcrosa_iter" value="$(arg sk_hybrid_dcrosa_iter)" type="int"/>
+    <param name="sk/hybrid_dcrosa_confidence_th" value="$(arg sk_hybrid_dcrosa_confidence_th)" type="double"/>
+    <param name="sk/hybrid_dcrosa_neighbor_blend" value="$(arg sk_hybrid_dcrosa_neighbor_blend)" type="double"/>
+    <param name="sk/hybrid_smooth_iter" value="$(arg sk_hybrid_smooth_iter)" type="int"/>
+    <param name="sk/dcrosa_topology_sample_radius" value="$(arg sk_dcrosa_topology_sample_radius)" type="double"/>
+    <param name="sk/dcrosa_topology_min_support" value="$(arg sk_dcrosa_topology_min_support)" type="int"/>
+    <param name="sk/dcrosa_guided_min_branch_len_scale" value="$(arg sk_dcrosa_guided_min_branch_len_scale)" type="double"/>
+    <param name="sk/dcrosa_guided_confidence_ratio" value="$(arg sk_dcrosa_guided_confidence_ratio)" type="double"/>
+    <param name="sk/dcrosa_guided_min_group_size" value="$(arg sk_dcrosa_guided_min_group_size)" type="int"/>
+
+    <!-- utils -->
+    <param name="fps/gpu"           value="$(arg fps_gpu)" type="string"/>
+    <param name="fps/cpu"           value="$(arg fps_cpu)" type="string"/>
+    <param name="fps/input"         value="$(arg fps_input)" type="string"/>
+    <param name="fps/output"        value="$(arg fps_output)" type="string"/>
+    <param name="input/resolution"  value="$(arg input_resolution)" type="double"/>
+    <param name="input/independent" value="$(arg input_independent)" type="bool"/>
+  </group>
+</launch>
